@@ -1,17 +1,62 @@
-blockList <- function(id, orient = c("vertical", "horizontal")) { # nolint
-  stopifnot(!is.mixing(id))
+BLOCK_LIST_ID <- "block-list" # nolint
+
+blockListUI <- function( # nolint
+  id, 
+  orient = c("vertical", "horizontal"),
+  headers = shiny::h5
+) {
+  stopifnot(!missing(id))
+  ns <- NS(id)
 
   orient <- match.arg(orient)
 
   blocks <- available_blocks()
 
   div(
-    h5("Data"),
-    lapply(blocks$data, blockPill),
-    h5("Transform"),
-    lapply(blocks$transform, blockPill),
-    h5("Visualise"),
-    lapply(blocks$visualise, blockPill)
+    id = ns(BLOCK_LIST_ID),
+    sortable_dependency(),
+    dependency("register"),
+    headers("Data"),
+    blockWrapper(blocks$data),
+    headers("Transform"),
+    blockWrapper(blocks$transform),
+    headers("Visualise"),
+    blockWrapper(blocks$visualise)
+  )
+}
+
+block_list_server <- function(id){
+  shiny::moduleServer(
+    id,
+    \(input, output, session){
+
+      send_message <- make_send_message("block-list")
+      observe({
+        send_message("init", id = session$ns(BLOCK_LIST_ID))
+      })
+
+      rvs <- reactiveValues(
+        block = list(),
+        error = NULL
+      )
+
+      resp <- eventReactive(input$block, {
+        rvs$block <- input$block
+      })
+
+      observeEvent(input$error, {
+        rvs$error <- input$error
+      })
+
+      return(rvs)
+    }
+  )
+}
+
+blockWrapper <- function(blocks) { # nolint
+  div(
+    class = "block-list-wrapper",
+    lapply(blocks, blockPill)
   )
 }
 
@@ -26,8 +71,8 @@ blockPill.block_reg <- function( # nolint
   name <- get_name(obj)
   p(
     name, 
-    `data-fn` = obj, 
-    class = sprintf("mb-1 w-100 badge add-block bg-%s", type_to_color(type))
+    `data-fn` = obj,
+    class = sprintf("mb-1 badge add-block bg-%s", type_to_color(type))
   )
 }
 
@@ -39,7 +84,7 @@ get_name.block_reg <- function(obj) { # nolint
   obj |>
     gsub("_block$", "", x = _) |>
     gsub("^new_", "", x = _) |>
-    gsub("_", " ", x = _) |>
+    gsub("_|\\.", " ", x = _) |>
     tolower() |>
     tools::toTitleCase()
 }
