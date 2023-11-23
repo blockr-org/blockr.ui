@@ -47,20 +47,12 @@ block_list_server <- function(id){
         send_message("init", id = session$ns(BLOCK_LIST_ID))
       })
 
-      rvs <- reactiveValues(
-        block = list(),
-        error = NULL
+      return(
+        list(
+          error = reactive(input$error),
+          block = reactive(input$block)
+        )
       )
-
-      resp <- eventReactive(input$block, {
-        rvs$block <- input$block
-      })
-
-      observeEvent(input$error, {
-        rvs$error <- input$error
-      })
-
-      return(rvs)
     }
   )
 }

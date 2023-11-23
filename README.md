@@ -29,12 +29,12 @@ ui <- fluidPage(
 server <- \(...){
   sel <- block_list_server("blockList")
 
-  observeEvent(sel$error, {
-    print(sel$error)
+  observeEvent(sel$error(), {
+    print(sel$error())
   })
 
-  observeEvent(sel$block, {
-    print(sel$block)
+  observeEvent(sel$block(), {
+    print(sel$block())
   })
 }
 
