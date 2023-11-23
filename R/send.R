@@ -1,3 +1,11 @@
+#' Send Factory
+#' 
+#' Makes a function that sends a custom message to the client.
+#' 
+#' @param prefix Prefix to use all messages.
+#' @param session [shiny::session] to use.
+#' 
+#' @keywords internal
 make_send_message <- function(
   prefix,
   session = shiny::getDefaultReactiveDomain()

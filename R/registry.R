@@ -1,14 +1,24 @@
 BLOCK_LIST_ID <- "block-list" # nolint
 
+#' Block List Module
+#' 
+#' @param id ID of module.
+#' @param headers Function to use for headers.
+#' 
+#' @return [shiny::reactiveValues] with `block` to add where, .
+#'  as well as `error` to display.
+#' 
+#' @name blockList
+#' 
+#' @import shiny
+#' 
+#' @export
 blockListUI <- function( # nolint
   id, 
-  orient = c("vertical", "horizontal"),
   headers = shiny::h5
 ) {
   stopifnot(!missing(id))
   ns <- NS(id)
-
-  orient <- match.arg(orient)
 
   blocks <- available_blocks()
 
@@ -25,6 +35,8 @@ blockListUI <- function( # nolint
   )
 }
 
+#' @rdname blockList
+#' @export
 block_list_server <- function(id){
   shiny::moduleServer(
     id,
@@ -60,7 +72,11 @@ blockWrapper <- function(blocks) { # nolint
   )
 }
 
-#' @export
+#' Get Pill
+#' 
+#' Get pill for block
+#' 
+#' @param obj Object to get pill for.
 blockPill <- function(obj) UseMethod("blockPill") # nolint
 
 #' @export
@@ -76,7 +92,11 @@ blockPill.block_reg <- function( # nolint
   )
 }
 
-#' @export
+#' Get Name
+#' 
+#' Get name of block
+#' 
+#' @param obj Object to get name of.
 get_name <- function(obj) UseMethod("get_name") # nolint
 
 #' @export

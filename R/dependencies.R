@@ -1,10 +1,16 @@
 #' Dependencies
 #' 
+#' Attache dependncies.
+#' 
+#' @param dep Name of dependency, generally corresponding to a file name.
+#' 
+#' @importFrom htmltools htmlDependency
+#' 
 #' @keywords internal
 dependency <- function(dep){
   stopifnot(!missing(dep))
 
-  htmltools::htmlDependency(
+  htmlDependency(
     package = "block.ui",
     version = utils::packageVersion("block.ui"),
     name = dep,
@@ -13,6 +19,7 @@ dependency <- function(dep){
   )
 }
 
+#' @keywords internal
 sortable_dependency <- function(){
   htmlwidgets::getDependency("sortable", "sortable")
 }

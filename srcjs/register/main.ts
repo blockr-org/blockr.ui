@@ -88,17 +88,6 @@ const sortableOptions = (ns: namespace) => {
         return;
       }
 
-      // get the type of block the user wants to insert a
-      const insertType = $(`.block:eq(${blockIndex - 1})`)
-        .data("block-type")
-        .split(",");
-
-      if (insertType == "plot") {
-        err.type = Error.stackAlreadyHasPlotBlock;
-        error(err);
-        return;
-      }
-
       send({
         id: "block",
         ns: ns,
