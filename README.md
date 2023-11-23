@@ -1,26 +1,43 @@
-
-# block.ui
-
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of block.ui is to ...
+# block.ui
+
+UI components to build dashboards with [blockr](https://github.com/blockr-org/blockr)
 
 ## Installation
 
-You can install the development version of block.ui from [GitHub](https://github.com/) with:
-
 ``` r
-# install.packages("devtools")
-devtools::install_github("blockr-org/block.ui")
+# install.packages("remotes")
+remotes::install_github("blockr-org/block.ui")
 ```
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
 ``` r
+library(shiny)
 library(block.ui)
-## basic example code
+
+ui <- fluidPage(
+  theme = bslib::bs_theme(
+    version = 5,
+    bootswatch = "minty"
+  ),
+  blockListUI("blockList")
+)
+
+server <- \(...){
+  sel <- block_list_server("blockList")
+
+  observeEvent(sel$error, {
+    print(sel$error)
+  })
+
+  observeEvent(sel$block, {
+    print(sel$block)
+  })
+}
+
+shinyApp(ui, server, options = list(port = 3000L))
 ```
 
