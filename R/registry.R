@@ -150,6 +150,14 @@ available_blocks <- function(){
   )
 }
 
+#' Construct Block
+#' 
+#' Construct block object.
+#' 
+#' @param x Object to construct block from.
+#' @param type Type of block.
+#' 
+#' @keywords internal
 build_block <- function(x, type){
   structure(
     x,
