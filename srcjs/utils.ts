@@ -1,5 +1,5 @@
 import { Error } from "./errors";
-import { messages } from "./errors";
+import { messages, types } from "./errors";
 import { priority, priorityString } from "./priority";
 
 export type namespace = string;
@@ -22,7 +22,7 @@ export function error(params: errorMsg): void {
     ns: params.ns,
     id: "error",
     message: {
-      type: params.type,
+      type: types.get(params.type) || "unknown error",
       message: messages.get(params.type) || "unknown error",
     },
     priority: priority.immediate,

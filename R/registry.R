@@ -57,6 +57,14 @@ block_list_server <- function(id){
   )
 }
 
+#' Block Wrapper
+#' 
+#' Creates a UI wrapper for a block.
+#' Used to enable sortable.
+#' 
+#' @param blocks List of blocks to wrap.
+#' 
+#' @keywords internal
 blockWrapper <- function(blocks) { # nolint
   div(
     class = "block-list-wrapper",

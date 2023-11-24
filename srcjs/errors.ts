@@ -17,3 +17,10 @@ messages.set(
   Error.stackAlreadyHasPlotBlock,
   "this stack already includes a plot block",
 );
+
+export const types: Map<Error, string> = new Map();
+
+types.set(Error.noStack, "no-stack");
+types.set(Error.noBlockIndex, "no-block-index");
+types.set(Error.stackAlreadyHasDataBlock, "stack-already-has-data-block");
+types.set(Error.stackAlreadyHasPlotBlock, "stack-already-has-plot-block");
