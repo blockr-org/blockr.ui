@@ -6,11 +6,23 @@ ui <- fluidPage(
     version = 5,
     bootswatch = "minty"
   ),
-  blockListUI("blockList")
+  addStackUI("add",
+    tags$a(
+      class = "btn btn-primary",
+      "add stack"
+    )
+  ),
+  blockListUI("list")
 )
 
 server <- \(...){
-  sel <- block_list_server("blockList")
+  add_stack_server(
+    "add",
+    on_deselect = on_deselect,
+    on_select = on_select
+  )
+
+  sel <- block_list_server("list")
 
   observeEvent(sel$error(), {
     print(sel$error())

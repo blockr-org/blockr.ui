@@ -53,13 +53,13 @@ const sortableOptions = (ns: namespace, feedback: boolean) => {
         });
 
       // get stackId
-      const stackId = $stack.attr("id").split("-")[1];
+      const stackId: string = $stack.attr("id").split("-")[1];
 
       // get block id
-      const blockId = $(target).closest(".block").data("value");
+      const blockId: string = $(target).closest(".block").data("value");
 
       // get index where the user wants to insert the block
-      let blockIndex;
+      let blockIndex: number;
       $stack.find(".block").each((index, el) => {
         if ($(el).data("value") == blockId) {
           blockIndex = index + 1;

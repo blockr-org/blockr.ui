@@ -18,7 +18,7 @@ export interface errorMsg {
   feedback: boolean;
 }
 
-export function error(params: errorMsg): void {
+export const error = (params: errorMsg): void => {
   const msg: wsMsg = {
     ns: params.ns,
     id: "error",
@@ -32,18 +32,18 @@ export function error(params: errorMsg): void {
   console.error(`${msg.message.message}`);
   showError(params);
   send(msg);
-}
+};
 
-export function send(params: wsMsg): void {
+export const send = (params: wsMsg): void => {
   let id = params.id;
   if (params.ns) id = `${params.ns}-${id}`;
 
   const priority = priorityString.get(params.priority) || "deferred";
 
   Shiny.setInputValue(id, params.message, { priority: priority });
-}
+};
 
-export function showError(err: errorMsg) {
+export const showError = (err: errorMsg): void => {
   if (!err.feedback) return;
 
   const $toast = $(`#${err.ns}-toast`);
@@ -55,9 +55,14 @@ export function showError(err: errorMsg) {
   setTimeout(() => {
     $toast.hide();
   }, 4500);
-}
+};
 
-const upperCaseFirstLetter = (str: string) => {
+const upperCaseFirstLetter = (str: string): string => {
   const b: string = str.substring(0, 4).normalize();
   return b[0].toUpperCase() + b.substring(1) + str.substring(4);
+};
+
+export const getNamespace = (id: string): namespace => {
+  const nsArr: Array<string> = id.split("-");
+  return nsArr.slice(0, nsArr.length - 1).join("-");
 };

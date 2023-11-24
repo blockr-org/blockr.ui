@@ -2,6 +2,8 @@
 
 S3method(blockPill,block_reg)
 S3method(get_name,block_reg)
+export(addStackUI)
+export(add_stack_server)
 export(blockListUI)
 export(block_list_server)
 export(toast)
