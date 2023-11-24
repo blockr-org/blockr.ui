@@ -1,7 +1,7 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-# block.ui
+# blockr.ui
 
 UI components to build dashboards with [blockr](https://github.com/blockr-org/blockr)
 
@@ -9,14 +9,14 @@ UI components to build dashboards with [blockr](https://github.com/blockr-org/bl
 
 ``` r
 # install.packages("remotes")
-remotes::install_github("blockr-org/block.ui")
+remotes::install_github("blockr-org/blockr.ui")
 ```
 
 ## Example
 
 ``` r
 library(shiny)
-library(block.ui)
+library(blockr.ui)
 
 ui <- fluidPage(
   theme = bslib::bs_theme(

@@ -11,8 +11,8 @@ dependency <- function(dep){
   stopifnot(!missing(dep))
 
   htmlDependency(
-    package = "block.ui",
-    version = utils::packageVersion("block.ui"),
+    package = "blockr.ui",
+    version = utils::packageVersion("blockr.ui"),
     name = dep,
     src = "assets",
     script = c(file = sprintf("%s.js", dep))
