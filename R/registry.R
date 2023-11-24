@@ -30,16 +30,7 @@ blockListUI <- function( # nolint
 
   blocks <- available_blocks()
 
-  div(
-    id = ns(BLOCK_LIST_ID),
-    sortable_dependency(),
-    dependency("register"),
-    headers("Data"),
-    blockWrapper(blocks$data),
-    headers("Transform"),
-    blockWrapper(blocks$transform),
-    headers("Visualise"),
-    blockWrapper(blocks$visualise),
+  tagList(
     toast(
       id = ns("toast"),
       position = toast_position,
@@ -47,6 +38,17 @@ blockListUI <- function( # nolint
         tags$strong("Error", class = "me-auto")
       ),
       toastBody()
+    ),
+    div(
+      id = ns(BLOCK_LIST_ID),
+      sortable_dependency(),
+      dependency("register"),
+      headers("Data"),
+      blockWrapper(blocks$data),
+      headers("Transform"),
+      blockWrapper(blocks$transform),
+      headers("Visualise"),
+      blockWrapper(blocks$visualise)
     )
   )
 }
