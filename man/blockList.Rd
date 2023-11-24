@@ -6,14 +6,22 @@
 \alias{block_list_server}
 \title{Block List Module}
 \usage{
-blockListUI(id, headers = shiny::h5)
+blockListUI(
+  id,
+  headers = shiny::h5,
+  toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
+)
 
-block_list_server(id)
+block_list_server(id, feedback = TRUE)
 }
 \arguments{
 \item{id}{ID of module.}
 
 \item{headers}{Function to use for headers.}
+
+\item{toast_position}{Position of toast, only used if \code{feeedback} is \code{TRUE}.}
+
+\item{feedback}{Whether to notify user of errors, warnings, and more.}
 }
 \value{
 \link[shiny:reactiveValues]{shiny::reactiveValues} with \code{block} to add where, .

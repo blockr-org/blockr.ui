@@ -12,12 +12,12 @@ $(() => {
     );
 
     for (let i: number = 0; i < parents.length; ++i) {
-      new Sortable(parents[i], sortableOptions(msg.ns));
+      new Sortable(parents[i], sortableOptions(msg.ns, msg.feedback));
     }
   });
 });
 
-const sortableOptions = (ns: namespace) => {
+const sortableOptions = (ns: namespace, feedback: boolean) => {
   return {
     draggable: ".add-block",
     onEnd: (event: any) => {
@@ -28,6 +28,7 @@ const sortableOptions = (ns: namespace) => {
         id: "error",
         ns: ns,
         type: Error.noStack,
+        feedback: feedback,
       };
 
       // it's not dropped in a stack

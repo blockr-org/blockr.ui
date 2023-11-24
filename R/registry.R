@@ -4,6 +4,8 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' 
 #' @param id ID of module.
 #' @param headers Function to use for headers.
+#' @param feedback Whether to notify user of errors, warnings, and more.
+#' @param toast_position Position of toast, only used if `feeedback` is `TRUE`.
 #' 
 #' @return [shiny::reactiveValues] with `block` to add where, .
 #'  as well as `error` to display.
@@ -15,7 +17,13 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' @export
 blockListUI <- function( # nolint
   id, 
-  headers = shiny::h5
+  headers = shiny::h5,
+  toast_position = c(
+    "top-right", 
+    "top-left", 
+    "bottom-right", 
+    "bottom-left"
+  )
 ) {
   stopifnot(!missing(id))
   ns <- NS(id)
@@ -31,20 +39,35 @@ blockListUI <- function( # nolint
     headers("Transform"),
     blockWrapper(blocks$transform),
     headers("Visualise"),
-    blockWrapper(blocks$visualise)
+    blockWrapper(blocks$visualise),
+    toast(
+      id = ns("toast"),
+      position = toast_position,
+      toastHeader(
+        tags$strong("Error", class = "me-auto")
+      ),
+      toastBody()
+    )
   )
 }
 
 #' @rdname blockList
 #' @export
-block_list_server <- function(id){
+block_list_server <- function(
+  id,
+  feedback = TRUE
+){
   shiny::moduleServer(
     id,
     \(input, output, session){
-
       send_message <- make_send_message("block-list")
+
       observe({
-        send_message("init", id = session$ns(BLOCK_LIST_ID))
+        send_message(
+          "init", 
+          id = session$ns(BLOCK_LIST_ID),
+          feedback = feedback
+        )
       })
 
       return(
