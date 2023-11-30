@@ -13,6 +13,8 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' @name blockList
 #' 
 #' @import shiny
+#' @import blockr
+#' @importFrom purrr imap
 #' 
 #' @export
 blockListUI <- function( # nolint
@@ -28,7 +30,11 @@ blockListUI <- function( # nolint
   stopifnot(!missing(id))
   ns <- NS(id)
 
-  blocks <- available_blocks()
+  blocks <- available_blocks() |>
+    imap(\(block, index){
+      attr(block, "index") <- index
+      return(block)
+    })
 
   tagList(
     sortable_dependency(),
@@ -59,11 +65,11 @@ blockListUI <- function( # nolint
         )
       ),
       headers("Data"),
-      blockWrapper(blocks$data),
+      blockWrapper(blocks, "data_block"),
       headers("Transform"),
-      blockWrapper(blocks$transform),
+      blockWrapper(blocks, "transform_block"),
       headers("Visualise"),
-      blockWrapper(blocks$visualise)
+      blockWrapper(blocks, "visualise_block")
     )
   )
 }
@@ -103,105 +109,57 @@ block_list_server <- function(
 #' Used to enable sortable.
 #' 
 #' @param blocks List of blocks to wrap.
+#' @param cls Class to filter
+#' 
+#' @importFrom purrr keep map
 #' 
 #' @keywords internal
-blockWrapper <- function(blocks) { # nolint
+blockWrapper <- function(blocks, cls) { # nolint
   div(
     class = "block-list-wrapper",
-    lapply(blocks, blockPill)
+    blocks |>
+      blocks_filter(cls) |>
+      map(blockPill)
   )
+}
+
+blocks_filter <- function(blocks, cls){
+  blocks |>
+    keep(\(block){
+      classes <- attr(block, "classes")
+      cls %in% classes
+    })
 }
 
 #' Get Pill
 #' 
 #' Get pill for block
 #' 
-#' @param obj Object to get pill for.
-blockPill <- function(obj) UseMethod("blockPill") # nolint
-
-#' @export
-blockPill.block_reg <- function( # nolint
-  obj
+#' @param block Object to get pill for.
+blockPill <- function( # nolint
+  block
 ){
-  type <- attr(obj, "type")
-  name <- get_name(obj)
   p(
-    name, 
-    `data-fn` = obj,
-    class = sprintf("mb-1 badge add-block bg-%s", type_to_color(type))
+    block_name(block),
+    `data-index` = block_index(block),
+    `data-description` = block_descr(block),
+    class = sprintf("mb-1 badge add-block bg-%s", block_color(block))
   )
 }
 
-#' Get Name
-#' 
-#' Get name of block
-#' 
-#' @param obj Object to get name of.
-get_name <- function(obj) UseMethod("get_name") # nolint
-
-#' @export
-get_name.block_reg <- function(obj) { # nolint
-  obj |>
-    gsub("_block$", "", x = _) |>
-    gsub("^new_", "", x = _) |>
-    gsub("_|\\.", " ", x = _) |>
-    tolower() |>
-    tools::toTitleCase()
+block_index <- function(block){
+  attr(block, "index")
 }
 
-type_to_color <- function(
-  type = c("data", "transform", "visualise")
-){
-  switch(
-    type,
-    data = "primary",
-    transform = "secondary",
-    visualise = "info",
-    "dark"
-  )
+block_color <- function(block) {
+  classes <- attr(block, "classes")
+
+  if("data_block" %in% classes)
+    return("primary")
+
+  if("transform_block" %in% classes)
+    return("secondary")
+
+  return("info")
 }
 
-available_blocks <- function(){
-  data <- c(
-    "data_block",
-    "demo_data_block",
-    "demo_join_block"
-  )
-
-  transform <- c(
-    "select_block",
-    "filter_block",
-    "arrange_block",
-    "summarize_block",
-    "group_by_block",
-    "as_factor_block",
-    "head_block"
-  )
-
-  visualise <- c(
-    "plot_block",
-    "ggiraph_block"
-  )
-
-  list(
-    data = lapply(data, build_block, "data"),
-    transform = lapply(transform, build_block, "transform"),
-    visualise = lapply(visualise, build_block, "visualise")
-  )
-}
-
-#' Construct Block
-#' 
-#' Construct block object.
-#' 
-#' @param x Object to construct block from.
-#' @param type Type of block.
-#' 
-#' @keywords internal
-build_block <- function(x, type){
-  structure(
-    x,
-    type = type,
-    class = c("block_reg", class(x))
-  )
-}

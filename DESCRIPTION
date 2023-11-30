@@ -16,6 +16,10 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Imports:
   shiny,
+  purrr,
+  blockr,
   htmltools
 Suggests:
   htmlwidgets
+Remotes:
+  blockr-org/blockr

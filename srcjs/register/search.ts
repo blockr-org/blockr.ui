@@ -26,7 +26,7 @@ const search = (params: any): AnyFunction => {
       .find(".add-block")
       .each((_, pill) => {
         if (
-          $(pill).data("fn").includes(query) ||
+          $(pill).data("description").includes(query) ||
           $(pill).text().includes(query)
         ) {
           $(pill).show();

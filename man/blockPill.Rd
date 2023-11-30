@@ -4,10 +4,10 @@
 \alias{blockPill}
 \title{Get Pill}
 \usage{
-blockPill(obj)
+blockPill(block)
 }
 \arguments{
-\item{obj}{Object to get pill for.}
+\item{block}{Object to get pill for.}
 }
 \description{
 Get pill for block
