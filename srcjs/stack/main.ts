@@ -78,12 +78,10 @@ $(() => {
   });
 
   Shiny.addCustomMessageHandler("add-stack-started", (msg: any) => {
-    console.log(msg);
     eval(msg.js);
   });
 
   Shiny.addCustomMessageHandler("add-stack-ended", (msg: any) => {
-    console.log(msg);
     eval(msg.js);
   });
 });
