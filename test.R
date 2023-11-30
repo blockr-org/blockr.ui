@@ -14,7 +14,14 @@ ui <- fluidPage(
   ),
   blockListUI("list"),
   hr(),
-  actionButton("modal", "show modal")
+  actionButton("modal", "show modal"),
+  bsutils::offcanvas(
+    bsutils::offcanvasButton("show offcanvas"),
+    bsutils::offcanvasContent(
+      bsutils::offcanvasHeader("Blocks"),
+      blockListUI("offcanvaslist")
+    )
+  )
 )
 
 server <- \(input, output, session){
@@ -44,6 +51,7 @@ server <- \(input, output, session){
     msel <- block_list_server("modalist")
   })
 
+  osel <- block_list_server("offcanvaslist")
 }
 
 shinyApp(ui, server, options = list(port = 3000L))
