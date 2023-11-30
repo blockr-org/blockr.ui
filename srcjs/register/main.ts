@@ -1,5 +1,5 @@
 import "sortable";
-import { namespace, error, send, errorMsg } from "../utils";
+import { namespace, error, send, errorMsg, popovers } from "../utils";
 import { Error } from "../errors";
 import { priority } from "../priority";
 import { handleSearch } from "./search";
@@ -12,6 +12,7 @@ $(() => {
       new Sortable(parent, sortableOptions(msg.ns, msg.feedback));
     });
     handleSearch(msg);
+    popovers();
   });
 });
 

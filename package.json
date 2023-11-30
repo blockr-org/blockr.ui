@@ -27,6 +27,7 @@
     "webpack-merge": "^5.10.0"
   },
   "dependencies": {
+    "@types/bootstrap": "^5.2.10",
     "@types/rstudio-shiny": "github:rstudio/shiny"
   }
 }

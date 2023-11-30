@@ -66,3 +66,12 @@ export const getNamespace = (id: string): namespace => {
   const nsArr: Array<string> = id.split("-");
   return nsArr.slice(0, nsArr.length - 1).join("-");
 };
+
+export const popovers = (): void => {
+  const popoverTriggerList = document.querySelectorAll(
+    '[data-bs-toggle="popover"]',
+  );
+  [...popoverTriggerList].map(
+    (popoverTriggerEl) => new window.bootstrap.Popover(popoverTriggerEl),
+  );
+};

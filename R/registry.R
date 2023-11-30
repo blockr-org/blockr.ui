@@ -142,7 +142,9 @@ blockPill <- function( # nolint
   p(
     block_name(block),
     `data-index` = block_index(block),
-    `data-description` = block_descr(block),
+    `data-bs-toggle` = "popover",
+    `data-bs-title` = block_name(block),
+    `data-bs-content` = block_descr(block),
     class = sprintf("mb-1 badge add-block bg-%s", block_color(block))
   )
 }
