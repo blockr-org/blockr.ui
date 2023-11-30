@@ -21,6 +21,7 @@ toast <- function(
 
   div(
     class = sprintf("position-fixed %s", style),
+    style = "z-index:999",
     div(
       class = sprintf("toast %s", class),
       role = "alert",

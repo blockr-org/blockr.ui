@@ -2,18 +2,16 @@ import "sortable";
 import { namespace, error, send, errorMsg } from "../utils";
 import { Error } from "../errors";
 import { priority } from "../priority";
+import { handleSearch } from "./search";
 
 declare const Sortable: any;
 
 $(() => {
   Shiny.addCustomMessageHandler("block-list-init", (msg) => {
-    const parents: NodeList = document.querySelectorAll(
-      `#${msg.id} .block-list-wrapper`,
-    );
-
-    for (let i: number = 0; i < parents.length; ++i) {
-      new Sortable(parents[i], sortableOptions(msg.ns, msg.feedback));
-    }
+    $(`#${msg.id} .block-list-wrapper`).each((_, parent) => {
+      new Sortable(parent, sortableOptions(msg.ns, msg.feedback));
+    });
+    handleSearch(msg);
   });
 });
 

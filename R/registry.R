@@ -31,6 +31,8 @@ blockListUI <- function( # nolint
   blocks <- available_blocks()
 
   tagList(
+    sortable_dependency(),
+    dependency("register"),
     toast(
       id = ns("toast"),
       position = toast_position,
@@ -41,8 +43,21 @@ blockListUI <- function( # nolint
     ),
     div(
       id = ns(BLOCK_LIST_ID),
-      sortable_dependency(),
-      dependency("register"),
+      class = "blockr-registry",
+      div(
+        class = "input-group mb-2",
+        tags$input(
+          id = ns("query"),
+          type = "text",
+          class = "form-control",
+          placeholder = "search"
+        ),
+        tags$button(
+          id = ns("search"),
+          class = "btn btn-primary",
+          icon("search")
+        )
+      ),
       headers("Data"),
       blockWrapper(blocks$data),
       headers("Transform"),
