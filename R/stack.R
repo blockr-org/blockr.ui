@@ -4,7 +4,8 @@
 #' 
 #' @param id The id of button stack.
 #' @param item Item to use as draggable.
-#' @param on_select,on_deselect JavaScript to run when the user selects or deselects a block.
+#' @param on_select,on_deselect JavaScript to run when 
+#'  the user selects or deselects the stack button.
 #' 
 #' @name addStack
 #' 
@@ -59,10 +60,12 @@ add_stack_server <- function(
   )
 }
 
+# default on select
 on_select <- function(){
   "$('.masonry-row').addClass('bg-danger')"
 }
 
+# default on deselect
 on_deselect <- function(){
   "$('.masonry-row').removeClass('bg-danger')"
 }
