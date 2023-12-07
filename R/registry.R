@@ -39,7 +39,6 @@ blockListUI <- function( # nolint
   toast_position <- match.arg(toast_position)
 
   tagList(
-    sortable_dependency(),
     dependency("register"),
     toast(
       id = ns("toast"),
@@ -109,7 +108,7 @@ block_list_server <- function(
 #' Block Wrapper
 #' 
 #' Creates a UI wrapper for a block.
-#' Used to enable sortable.
+#' Used to enable draggable.
 #' 
 #' @param blocks List of blocks to wrap.
 #' @param cls Class to filter

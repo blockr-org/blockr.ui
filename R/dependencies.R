@@ -18,8 +18,3 @@ dependency <- function(dep){
     script = c(file = sprintf("%s.js", dep))
   )
 }
-
-#' @keywords internal
-sortable_dependency <- function(){
-  htmlwidgets::getDependency("sortable", "sortable")
-}

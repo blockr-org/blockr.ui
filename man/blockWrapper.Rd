@@ -13,6 +13,6 @@ blockWrapper(blocks, cls)
 }
 \description{
 Creates a UI wrapper for a block.
-Used to enable sortable.
+Used to enable draggable.
 }
 \keyword{internal}
