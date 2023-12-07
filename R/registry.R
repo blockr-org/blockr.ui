@@ -98,7 +98,8 @@ block_list_server <- function(
       return(
         list(
           error = reactive(input$error),
-          block = reactive(input$block)
+          started = reactive(input$started),
+          dropped = reactive(input$dropped)
         )
       )
     }
@@ -148,6 +149,7 @@ blockPill <- function( # nolint
     `data-bs-toggle` = "popover",
     `data-bs-title` = block_name(block),
     `data-bs-content` = block_descr(block),
+    draggable = TRUE,
     class = sprintf("mb-1 badge add-block bg-%s", block_color(block))
   )
 }

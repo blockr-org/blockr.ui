@@ -5,6 +5,7 @@
 #' @param id The id of button stack.
 #' @param target Selector of target element where stacks can be dropped.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
+#' @param feedback Whether to notify user of errors, warnings, and more.
 #' 
 #' @name addStack
 #' 

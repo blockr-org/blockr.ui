@@ -41,8 +41,12 @@ server <- \(input, output, session){
     print(sel$error())
   })
 
-  observeEvent(sel$block(), {
-    print(sel$block())
+  observeEvent(sel$dropped(), {
+    print(sel$dropped())
+  })
+
+  observeEvent(sel$started(), {
+    print(sel$started())
   })
 
   observeEvent(input$modal, {

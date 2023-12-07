@@ -20,6 +20,8 @@ add_stack_server(id, feedback = TRUE)
 \item{target}{Selector of target element where stacks can be dropped.}
 
 \item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
+
+\item{feedback}{Whether to notify user of errors, warnings, and more.}
 }
 \description{
 Create an "add stack" button.
