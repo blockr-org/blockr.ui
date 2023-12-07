@@ -6,14 +6,20 @@
 \alias{add_stack_server}
 \title{Add Stack}
 \usage{
-addStackUI(id, target)
+addStackUI(
+  id,
+  target,
+  toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
+)
 
-add_stack_server(id)
+add_stack_server(id, feedback = TRUE)
 }
 \arguments{
 \item{id}{The id of button stack.}
 
 \item{target}{Selector of target element where stacks can be dropped.}
+
+\item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
 }
 \description{
 Create an "add stack" button.

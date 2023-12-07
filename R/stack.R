@@ -4,39 +4,68 @@
 #' 
 #' @param id The id of button stack.
 #' @param target Selector of target element where stacks can be dropped.
+#' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' 
 #' @name addStack
 #' 
 #' @export
 addStackUI <- function( # nolint
   id,
-  target
+  target,
+  toast_position = c(
+    "top-right", 
+    "top-left", 
+    "bottom-right", 
+    "bottom-left"
+  )
 ){
   stopifnot(!missing(id), !missing(target))
+  toast_position <- match.arg(toast_position)
 
   ns <- shiny::NS(id)
 
-  div(
-    dependency("stack"),
-    `data-target` = target,
-    class = "add-stack-wrapper",
-    available_stacks() |>
-      map(stackPill, ns)
+  tagList(
+    toast(
+      id = ns("toast"),
+      position = toast_position,
+      toastHeader(
+        tags$strong("Error", class = "me-auto")
+      ),
+      toastBody()
+    ),
+    div(
+      dependency("stack"),
+      `data-target` = target,
+      class = "add-stack-wrapper",
+      available_stacks() |>
+        map(stackPill, ns)
+    )
   )
 }
 
 #' @rdname addStack
 #' @export
 add_stack_server <- function(
-  id
+  id,
+  feedback = TRUE
 ){
   stopifnot(!missing(id))
 
   moduleServer(
     id,
     function(input, output, session){
+      send_message <- make_send_message("add-stack")
+
+      observe({
+        send_message(
+          "init",
+          feedback = feedback
+        )
+      })
+
       return(
         list(
+          error = reactive(input$error),
           started = reactive(input$started),
           dropped = reactive(input$dropped)
         )

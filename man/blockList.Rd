@@ -19,7 +19,7 @@ block_list_server(id, feedback = TRUE)
 
 \item{headers}{Function to use for headers.}
 
-\item{toast_position}{Position of toast, only used if \code{feeedback} is \code{TRUE}.}
+\item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
 
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
 }

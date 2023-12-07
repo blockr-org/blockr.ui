@@ -5,7 +5,7 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' @param id ID of module.
 #' @param headers Function to use for headers.
 #' @param feedback Whether to notify user of errors, warnings, and more.
-#' @param toast_position Position of toast, only used if `feeedback` is `TRUE`.
+#' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' 
 #' @return [shiny::reactiveValues] with `block` to add where, .
 #'  as well as `error` to display.
@@ -35,6 +35,8 @@ blockListUI <- function( # nolint
       attr(block, "index") <- index
       return(block)
     })
+
+  toast_position <- match.arg(toast_position)
 
   tagList(
     sortable_dependency(),
