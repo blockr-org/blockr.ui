@@ -3,69 +3,59 @@
 #' Create an "add stack" button.
 #' 
 #' @param id The id of button stack.
-#' @param item Item to use as draggable.
-#' @param on_select,on_deselect JavaScript to run when 
-#'  the user selects or deselects the stack button.
+#' @param target Selector of target element where stacks can be dropped.
 #' 
 #' @name addStack
 #' 
 #' @export
 addStackUI <- function( # nolint
   id,
-  item
+  target
 ){
-  stopifnot(!missing(id))
+  stopifnot(!missing(id), !missing(target))
 
   ns <- shiny::NS(id)
 
   div(
-    sortable_dependency(),
     dependency("stack"),
+    `data-target` = target,
     class = "add-stack-wrapper",
-    id = ns("addStackWrapper"),
-    item |>
-      shiny::tagAppendAttributes(
-        id = ns("addStack"),
-        class = "add-stack"
-      )
+    available_stacks() |>
+      map(stackPill, ns)
   )
 }
 
 #' @rdname addStack
 #' @export
 add_stack_server <- function(
-  id,
-  on_select = NULL,
-  on_deselect = NULL
+  id
 ){
+  stopifnot(!missing(id))
+
   moduleServer(
     id,
     function(input, output, session){
-      send_message <- make_send_message("add-stack")
-
-      if(!is.null(on_deselect)){
-        observeEvent(input$addStackEnded, {
-          eval <- on_deselect()
-          send_message("ended", js = eval)
-        })
-      }
-
-      if(!is.null(on_select)){
-        observeEvent(input$addStackStarted, {
-          eval <- on_select()
-          send_message("started", js = eval)
-        })
-      }
+      return(
+        list(
+          started = reactive(input$started),
+          dropped = reactive(input$dropped)
+        )
+      )
     }
   )
 }
 
-# default on select
-on_select <- function(){
-  "$('.masonry-row').addClass('bg-danger')"
+available_stacks <- function(){
+  c(
+    "data"
+  )
 }
 
-# default on deselect
-on_deselect <- function(){
-  "$('.masonry-row').removeClass('bg-danger')"
+stackPill <- function(stack, ns){ # nolint
+  span(
+    class = "add-stack badge bg-primary cursor-pointer",
+    draggable = "true",
+    id = ns(stack),
+    stack
+  )
 }

@@ -6,16 +6,14 @@
 \alias{add_stack_server}
 \title{Add Stack}
 \usage{
-addStackUI(id, item)
+addStackUI(id, target)
 
-add_stack_server(id, on_select = NULL, on_deselect = NULL)
+add_stack_server(id)
 }
 \arguments{
 \item{id}{The id of button stack.}
 
-\item{item}{Item to use as draggable.}
-
-\item{on_select, on_deselect}{JavaScript to run when the user selects or deselects a block.}
+\item{target}{Selector of target element where stacks can be dropped.}
 }
 \description{
 Create an "add stack" button.

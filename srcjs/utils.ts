@@ -63,8 +63,8 @@ const upperCaseFirstLetter = (str: string): string => {
 };
 
 export const getNamespace = (id: string): namespace => {
-  const nsArr: Array<string> = id.split("-");
-  return nsArr.slice(0, nsArr.length - 1).join("-");
+  const nsArr: Array<string> = id?.split("-");
+  return nsArr?.slice(0, nsArr.length - 1).join("-");
 };
 
 export const popovers = (): void => {

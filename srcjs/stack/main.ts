@@ -1,87 +1,65 @@
 import "sortable";
-import { blockEvent, fireEvent } from "../events";
 import { getNamespace, send } from "../utils";
 import { priority } from "../priority";
 
-declare const Sortable: any;
-
 $(() => {
-  const draggables: JQuery = $(document).find(".add-stack-wrapper");
+  const draggables: JQuery = $(document).find(".add-stack");
 
   draggables.each((_: number, draggable: any) => {
     if ($(draggable).hasClass("sorted")) return;
 
     $(draggable).addClass("sorted");
 
-    const button: JQuery = $(draggable).find(".add-stack");
+    const ns = getNamespace($(draggable).attr("id"));
 
-    new Sortable(draggable, {
-      draggable: ".add-stack",
-      onStart: () => {
-        const e: blockEvent = {
-          name: "add-stack-start",
-          data: {},
-        };
+    const stackTarget = $(draggable)
+      .closest(".add-stack-wrapper")
+      .data("target");
 
-        fireEvent(e, button[0]);
+    let type = "";
+    $(draggable).on("dragstart", (e: any) => {
+      type = $(e.target).text();
+      e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
+    });
 
-        send({
-          id: "addStackStarted",
-          ns: getNamespace($(draggable).attr("id")),
-          message: {
-            type: "add-stack-started",
-            stackId: $(button).attr("id"),
-          },
-          priority: priority.immediate,
-        });
-      },
-      onUnchoose: () => {
-        const e: blockEvent = {
-          name: "add-stack-ended",
-          data: {},
-        };
+    $(draggable).on("dragover", (e: any) => {
+      e.preventDefault();
+    });
 
-        fireEvent(e, button[0]);
+    $(draggable).on("dragenter", (e: any) => {
+      send({
+        id: "started",
+        ns: ns,
+        message: {
+          type: type,
+        },
+        priority: priority.immediate,
+      });
+      e.preventDefault();
+    });
 
-        send({
-          id: "addStackEnded",
-          ns: getNamespace($(draggable).attr("id")),
-          message: {
-            type: "add-stack-ended",
-            stackId: $(button).attr("id"),
-          },
-        });
-      },
-      onEnd: (evt: any) => {
-        send({
-          id: "addStackEnded",
-          ns: getNamespace($(draggable).attr("id")),
-          message: {
-            stackId: $(button).attr("id"),
-          },
-        });
+    $(stackTarget).on("dragover", (e: any) => {
+      e.preventDefault();
+    });
 
-        const rowID: string = $(evt.originalEvent.srcElement)
-          .closest(".masonry-row")
-          .attr("id");
+    $(stackTarget).on("dragenter", (e: any) => {
+      e.preventDefault();
+    });
 
-        send({
-          id: "addStack",
-          ns: getNamespace($(draggable).attr("id")),
-          message: {
-            rowID: rowID,
-          },
-          priority: priority.immediate,
-        });
-      },
+    $(stackTarget).on("drop dragdrop", (e: any) => {
+      send({
+        id: "dropped",
+        ns: ns,
+        message: {
+          type: type,
+          target: e.target?.id,
+        },
+        priority: priority.immediate,
+      });
     });
   });
 
-  Shiny.addCustomMessageHandler("add-stack-started", (msg: any) => {
-    eval(msg.js);
-  });
-
-  Shiny.addCustomMessageHandler("add-stack-ended", (msg: any) => {
-    eval(msg.js);
+  Shiny.addCustomMessageHandler("add-stack-init", (msg: any) => {
+    console.log(msg);
   });
 });

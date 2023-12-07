@@ -6,12 +6,6 @@ ui <- fluidPage(
     version = 5,
     bootswatch = "minty"
   ),
-  addStackUI("add",
-    tags$a(
-      class = "btn btn-primary",
-      "add stack"
-    )
-  ),
   blockListUI("list"),
   hr(),
   actionButton("modal", "show modal"),
@@ -21,15 +15,25 @@ ui <- fluidPage(
       bsutils::offcanvasHeader("Blocks"),
       blockListUI("offcanvaslist")
     )
+  ),
+  addStackUI("add", target = "#stackTarget"),
+  div(
+    id = "stackTarget",
+    class = "bg-success",
+    style = "height: 200px; width: 100%;"
   )
 )
 
 server <- \(input, output, session){
-  add_stack_server(
-    "add",
-    on_deselect = on_deselect,
-    on_select = on_select
-  )
+  add <- add_stack_server("add")
+
+  observeEvent(add$dropped(), {
+    print(add$dropped())
+  })
+
+  observeEvent(add$started(), {
+    print(add$started())
+  })
 
   sel <- block_list_server("list")
 
