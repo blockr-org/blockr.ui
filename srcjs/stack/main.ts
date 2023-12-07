@@ -1,4 +1,3 @@
-import "sortable";
 import { errorMsg, getNamespace, send, error } from "../utils";
 import { priority } from "../priority";
 import { Error } from "../errors";
@@ -79,6 +78,7 @@ const handleAddStack = (params: any) => {
 
 $(() => {
   Shiny.addCustomMessageHandler("add-stack-init", (msg: any) => {
+    console.log(msg);
     handleAddStack(msg);
   });
 });

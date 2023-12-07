@@ -1,4 +1,3 @@
-import "sortable";
 import { error, send, errorMsg, popovers, getNamespace } from "../utils";
 import { Error } from "../errors";
 import { priority } from "../priority";
@@ -8,7 +7,6 @@ $(() => {
   Shiny.addCustomMessageHandler("block-list-init", (msg) => {
     $(`#${msg.id} .block-list-wrapper`).each((_, parent) => {
       sortable(parent, msg);
-      //new Sortable(parent, sortableOptions(msg.ns, msg.feedback));
     });
     handleSearch(msg);
     popovers();

@@ -26,6 +26,7 @@ addStackUI <- function( # nolint
   ns <- shiny::NS(id)
 
   tagList(
+    dependency("stack"),
     toast(
       id = ns("toast"),
       position = toast_position,
@@ -35,7 +36,6 @@ addStackUI <- function( # nolint
       toastBody()
     ),
     div(
-      dependency("stack"),
       `data-target` = target,
       class = "add-stack-wrapper",
       available_stacks() |>
