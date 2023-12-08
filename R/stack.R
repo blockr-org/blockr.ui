@@ -12,7 +12,7 @@
 #' @export
 addStackUI <- function( # nolint
   id,
-  target,
+  target = ".stack-target",
   toast_position = c(
     "top-right", 
     "top-left", 
@@ -20,7 +20,7 @@ addStackUI <- function( # nolint
     "bottom-left"
   )
 ){
-  stopifnot(!missing(id), !missing(target))
+  stopifnot(!missing(id))
   toast_position <- match.arg(toast_position)
 
   ns <- shiny::NS(id)
@@ -72,6 +72,37 @@ add_stack_server <- function(
         )
       )
     }
+  )
+}
+
+#' Stack Area
+#' 
+#' Area where to drop stacks.
+#' 
+#' @param id The id of stack area.
+#' @param class Additional class to add to stack area.
+#' @param ... Additional __data__ attributes to add to stack area.
+#' @param style Additional style to add to stack area.
+#' 
+#' @export
+stacksArea <- function(id = NULL, class = "", style = "", ...){ # nolint
+  args <- list(...) |> purrr::keep(is.character)
+
+  if(length(args) > 0)
+    names(args) <- paste0("data-", names(args))
+
+  args <- append(
+    args,
+    list(
+      id = id,
+      style = style,
+      class = paste("stack-target", class) |> trimws()
+    )
+  )
+
+  do.call(
+    div,
+    args
   )
 }
 

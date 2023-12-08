@@ -16,11 +16,11 @@ ui <- fluidPage(
       blockListUI("offcanvaslist")
     )
   ),
-  addStackUI("add", target = "#stackTarget"),
-  div(
-    id = "stackTarget",
+  addStackUI("add"),
+  hr(),
+  stacksArea(
     class = "bg-success",
-    style = "height: 200px; width: 100%;"
+    style = "min-height:5rem;"
   )
 )
 

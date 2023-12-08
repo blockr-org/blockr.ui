@@ -8,7 +8,7 @@
 \usage{
 addStackUI(
   id,
-  target,
+  target = ".stack-target",
   toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
 )
 

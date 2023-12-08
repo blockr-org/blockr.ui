@@ -69,6 +69,8 @@ const handleAddStack = (params: any) => {
         message: {
           type: type,
           target: e.target?.id,
+          class: e.target?.class,
+          data: $(e.target).data(),
         },
         priority: priority.immediate,
       });
@@ -78,7 +80,6 @@ const handleAddStack = (params: any) => {
 
 $(() => {
   Shiny.addCustomMessageHandler("add-stack-init", (msg: any) => {
-    console.log(msg);
     handleAddStack(msg);
   });
 });
