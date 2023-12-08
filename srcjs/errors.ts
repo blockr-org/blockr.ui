@@ -3,11 +3,13 @@ export enum Error {
   noBlockIndex,
   stackAlreadyHasDataBlock,
   stackAlreadyHasPlotBlock,
+  noStackArea,
 }
 
 export const messages: Map<Error, string> = new Map();
 
 messages.set(Error.noStack, "must drag blocks within a stack");
+messages.set(Error.noStackArea, "cannot place stack here");
 messages.set(Error.noBlockIndex, "could not find block index");
 messages.set(
   Error.stackAlreadyHasDataBlock,

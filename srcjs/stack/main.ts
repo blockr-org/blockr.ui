@@ -46,7 +46,7 @@ const handleAddStack = (params: any) => {
       const err: errorMsg = {
         id: "error",
         ns: ns,
-        type: Error.noStack,
+        type: Error.noStackArea,
         feedback: params.feedback,
       };
 
