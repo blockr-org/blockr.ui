@@ -12,7 +12,7 @@ addStackUI(
   toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
 )
 
-add_stack_server(id, feedback = TRUE)
+add_stack_server(id, feedback = TRUE, delay = 0L, force = FALSE)
 }
 \arguments{
 \item{id}{The id of button stack.}
@@ -22,6 +22,10 @@ add_stack_server(id, feedback = TRUE)
 \item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
 
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
+
+\item{delay}{Delay in milliseconds before binding JavaScript.}
+
+\item{force}{Whether to force the rebind of even listeners.}
 }
 \description{
 Create an "add stack" button.

@@ -6,6 +6,8 @@
 #' @param target Selector of target element where stacks can be dropped.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param feedback Whether to notify user of errors, warnings, and more.
+#' @param delay Delay in milliseconds before binding JavaScript.
+#' @param force Whether to force the rebind of even listeners.
 #' 
 #' @name addStack
 #' 
@@ -48,7 +50,9 @@ addStackUI <- function( # nolint
 #' @export
 add_stack_server <- function(
   id,
-  feedback = TRUE
+  feedback = TRUE,
+  delay = 0L,
+  force = FALSE
 ){
   stopifnot(!missing(id))
 
@@ -60,7 +64,9 @@ add_stack_server <- function(
       observe({
         send_message(
           "init",
-          feedback = feedback
+          feedback = feedback,
+          delay = delay,
+          force = force
         )
       })
 

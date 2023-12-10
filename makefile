@@ -1,3 +1,6 @@
+install: check
+	Rscript -e "devtools::install()"
+
 check: document
 	Rscript -e "devtools::check()"
 
@@ -9,9 +12,6 @@ bundle:
 
 bundle_dev:
 	Rscript -e "packer::bundle_dev()"
-
-install: check
-	Rscript -e "devtools::install()"
 
 dev: bundle_dev 
 	Rscript test.R

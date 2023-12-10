@@ -80,6 +80,8 @@ const handleAddStack = (params: any) => {
 
 $(() => {
   Shiny.addCustomMessageHandler("add-stack-init", (msg: any) => {
-    handleAddStack(msg);
+    setTimeout(() => {
+      handleAddStack(msg);
+    }, msg.delay);
   });
 });
