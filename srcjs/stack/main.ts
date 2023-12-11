@@ -1,16 +1,14 @@
-import { errorMsg, getNamespace, send, error } from "../utils";
+import { errorMsg, send, error } from "../utils";
 import { priority } from "../priority";
 import { Error } from "../errors";
 
 const handleAddStack = (params: any) => {
-  const draggables: JQuery = $(document).find(".add-stack");
+  const draggables: JQuery = $(document)
+    .find(`#${params.ns}-addWrapper`)
+    .find(".add-stack");
 
   draggables.each((_: number, draggable: any) => {
-    if ($(draggable).hasClass("sorted")) return;
-
-    $(draggable).addClass("sorted");
-
-    const ns = getNamespace($(draggable).attr("id"));
+    const ns = params.ns;
 
     const stackTarget = $(draggable)
       .closest(".add-stack-wrapper")

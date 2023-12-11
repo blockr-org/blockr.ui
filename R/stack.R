@@ -7,7 +7,6 @@
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param delay Delay in milliseconds before binding JavaScript.
-#' @param force Whether to force the rebind of even listeners.
 #' 
 #' @name addStack
 #' 
@@ -39,6 +38,7 @@ addStackUI <- function( # nolint
     ),
     div(
       `data-target` = target,
+      id = ns("addWrapper"),
       class = "add-stack-wrapper",
       available_stacks() |>
         map(stackPill, ns)
@@ -51,8 +51,7 @@ addStackUI <- function( # nolint
 add_stack_server <- function(
   id,
   feedback = TRUE,
-  delay = 0L,
-  force = FALSE
+  delay = 0L
 ){
   stopifnot(!missing(id))
 
@@ -65,8 +64,7 @@ add_stack_server <- function(
         send_message(
           "init",
           feedback = feedback,
-          delay = delay,
-          force = force
+          delay = delay
         )
       })
 
