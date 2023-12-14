@@ -15,8 +15,10 @@ const handleAddStack = (params: any) => {
       .data("target");
 
     let valid = false;
+    let isAddStack = false;
     let type = "";
     $(draggable).on("dragstart", (e: any) => {
+      isAddStack = true;
       type = $(e.target).text();
       e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
     });
@@ -27,6 +29,7 @@ const handleAddStack = (params: any) => {
     });
 
     $(draggable).on("dragenter", (e: any) => {
+      isAddStack = true;
       send({
         id: "started",
         ns: ns,
@@ -40,6 +43,7 @@ const handleAddStack = (params: any) => {
 
     $(draggable).on("dragend", () => {
       if (valid) return;
+      if (!isAddStack) return;
 
       const err: errorMsg = {
         id: "error",
@@ -61,13 +65,15 @@ const handleAddStack = (params: any) => {
     });
 
     $(stackTarget).on("drop dragdrop", (e: any) => {
+      if (!isAddStack) return;
+      isAddStack = false;
       valid = true;
       send({
         id: "dropped",
         ns: ns,
         message: {
           type: type,
-          target: $(stackTarget).attr("id"),
+          target: $(e.target).closest(stackTarget).attr("id"),
           data: $(e.target).data(),
         },
         priority: priority.immediate,
