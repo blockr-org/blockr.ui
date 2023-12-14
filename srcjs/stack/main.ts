@@ -51,6 +51,7 @@ const handleAddStack = (params: any) => {
       error(err);
     });
 
+    $(stackTarget).off("dragover dragenter drop dragdrop");
     $(stackTarget).on("dragover", (e: any) => {
       e.preventDefault();
     });
@@ -79,6 +80,7 @@ const handleAddStack = (params: any) => {
 $(() => {
   Shiny.addCustomMessageHandler("add-stack-init", (msg: any) => {
     setTimeout(() => {
+      console.log(msg);
       handleAddStack(msg);
     }, msg.delay);
   });
