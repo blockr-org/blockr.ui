@@ -2,6 +2,10 @@ import { errorMsg, send, error } from "../utils";
 import { priority } from "../priority";
 import { Error } from "../errors";
 
+let valid = false;
+let type = "";
+let data = {};
+let target = "";
 const handleAddStack = (params: any) => {
   const draggables: JQuery = $(document)
     .find(`#${params.ns}-addWrapper`)
@@ -14,11 +18,7 @@ const handleAddStack = (params: any) => {
       .closest(".add-stack-wrapper")
       .data("target");
 
-    let valid = false;
-    let isAddStack = false;
-    let type = "";
     $(draggable).on("dragstart", (e: any) => {
-      isAddStack = true;
       type = $(e.target).text();
       e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
     });
@@ -29,7 +29,6 @@ const handleAddStack = (params: any) => {
     });
 
     $(draggable).on("dragenter", (e: any) => {
-      isAddStack = true;
       send({
         id: "started",
         ns: ns,
@@ -42,8 +41,20 @@ const handleAddStack = (params: any) => {
     });
 
     $(draggable).on("dragend", () => {
-      if (valid) return;
-      if (!isAddStack) return;
+      if (valid) {
+        send({
+          id: "dropped",
+          ns: ns,
+          message: {
+            type: type,
+            target: target,
+            data: data,
+          },
+          priority: priority.immediate,
+        });
+        valid = false;
+        return;
+      }
 
       const err: errorMsg = {
         id: "error",
@@ -65,19 +76,9 @@ const handleAddStack = (params: any) => {
     });
 
     $(stackTarget).on("drop dragdrop", (e: any) => {
-      if (!isAddStack) return;
-      isAddStack = false;
       valid = true;
-      send({
-        id: "dropped",
-        ns: ns,
-        message: {
-          type: type,
-          target: $(e.target).closest(stackTarget).attr("id"),
-          data: $(e.target).data(),
-        },
-        priority: priority.immediate,
-      });
+      target = $(e.target).closest(stackTarget).attr("id");
+      data = $(e.target).data();
     });
   });
 };
