@@ -67,8 +67,7 @@ const handleAddStack = (params: any) => {
         ns: ns,
         message: {
           type: type,
-          target: e.target?.id,
-          class: e.target?.class,
+          target: $(stackTarget).attr("id"),
           data: $(e.target).data(),
         },
         priority: priority.immediate,
