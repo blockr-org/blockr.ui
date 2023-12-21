@@ -6,7 +6,7 @@
 #' 
 #' @importFrom htmltools htmlDependency
 #' 
-#' @keywords internal
+#' @export
 dependency <- function(dep){
   stopifnot(!missing(dep))
 

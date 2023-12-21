@@ -12,4 +12,3 @@ dependency(dep)
 \description{
 Attache dependncies.
 }
-\keyword{internal}

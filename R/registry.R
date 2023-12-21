@@ -1,4 +1,4 @@
-BLOCK_LIST_ID <- "block-list" # nolint
+BLOCK_LIST_ID <- "blockList" # nolint
 
 #' Block List Module
 #' 
@@ -6,6 +6,7 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' @param headers Function to use for headers.
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
+#' @param delay Delay in milliseconds before binding JavaScript.
 #' 
 #' @return [shiny::reactiveValues] with `block` to add where, .
 #'  as well as `error` to display.
@@ -14,7 +15,7 @@ BLOCK_LIST_ID <- "block-list" # nolint
 #' 
 #' @import shiny
 #' @import blockr
-#' @importFrom purrr imap
+#' @importFrom purrr map2
 #' 
 #' @export
 blockListUI <- function( # nolint
@@ -30,8 +31,10 @@ blockListUI <- function( # nolint
   stopifnot(!missing(id))
   ns <- NS(id)
 
-  blocks <- available_blocks() |>
-    imap(\(block, index){
+  reg <- available_blocks()
+  # we use map2 because imap uses names instead of indices
+  blocks <- reg |>
+    map2(seq_along(reg), \(block, index){
       attr(block, "index") <- index
       return(block)
     })
@@ -79,7 +82,8 @@ blockListUI <- function( # nolint
 #' @export
 block_list_server <- function(
   id,
-  feedback = TRUE
+  feedback = TRUE,
+  delay = 0L
 ){
   shiny::moduleServer(
     id,
@@ -90,7 +94,8 @@ block_list_server <- function(
         send_message(
           "init", 
           id = session$ns(BLOCK_LIST_ID),
-          feedback = feedback
+          feedback = feedback,
+          delay = delay
         )
       })
 

@@ -12,7 +12,7 @@ blockListUI(
   toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
 )
 
-block_list_server(id, feedback = TRUE)
+block_list_server(id, feedback = TRUE, delay = 0L)
 }
 \arguments{
 \item{id}{ID of module.}
@@ -22,6 +22,8 @@ block_list_server(id, feedback = TRUE)
 \item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
 
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
+
+\item{delay}{Delay in milliseconds before binding JavaScript.}
 }
 \value{
 \link[shiny:reactiveValues]{shiny::reactiveValues} with \code{block} to add where, .

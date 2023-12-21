@@ -5,11 +5,13 @@ import { handleSearch } from "./search";
 
 $(() => {
   Shiny.addCustomMessageHandler("block-list-init", (msg) => {
-    $(`#${msg.id} .block-list-wrapper`).each((_, parent) => {
-      sortable(parent, msg);
-    });
-    handleSearch(msg);
-    popovers();
+    setTimeout(() => {
+      $(`#${msg.id} .block-list-wrapper`).each((_, parent) => {
+        sortable(parent, msg);
+      });
+      handleSearch(msg);
+      popovers();
+    }, msg.delay);
   });
 });
 
@@ -20,7 +22,6 @@ let valid = false;
 
 const sortStack = () => {
   $(".stack").off("dragover dragenter drop dragdrop");
-
   $(".stack").on("dragover", (e: any) => {
     e.preventDefault();
   });
@@ -37,7 +38,7 @@ const sortStack = () => {
       message: {
         type: type,
         index: index,
-        target: e.target?.id,
+        target: $(e.target).closest(".stack").attr("id"),
       },
       priority: priority.immediate,
     });
@@ -56,7 +57,7 @@ const sortable = (parent: HTMLElement, params: any) => {
       $(el).on("dragstart", (e: any) => {
         type = $(e.target).data("type");
         index = $(e.target).data("index");
-        ns = getNamespace($(e.target).attr("id"));
+        ns = getNamespace($(e.target).closest(".blockr-registry").attr("id"));
         e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
       });
 
