@@ -32,6 +32,7 @@ blockListUI <- function( # nolint
   ns <- NS(id)
 
   reg <- available_blocks()
+
   # we use map2 because imap uses names instead of indices
   blocks <- reg |>
     map2(seq_along(reg), \(block, index){
