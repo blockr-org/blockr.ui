@@ -1,0 +1,1 @@
+$((()=>{let o=!1;$(".blockr-lock input").one("change",(c=>{o=$(c.target).prop("checked")})),$(".blockr-lock input").on("click",(c=>{o=$(c.target).prop("checked")})),$(document).on("stack-render",(c=>{console.log(o),console.log(c.detail)}))}));

@@ -3,7 +3,6 @@ import { priority } from "../priority";
 import { Error } from "../errors";
 
 let valid = false;
-let type = "";
 let data = {};
 let target = "";
 const handleAddStack = (params: any) => {
@@ -19,7 +18,6 @@ const handleAddStack = (params: any) => {
       .data("target");
 
     $(draggable).on("dragstart", (e: any) => {
-      type = $(e.target).text();
       e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
     });
 
@@ -33,7 +31,7 @@ const handleAddStack = (params: any) => {
         id: "started",
         ns: ns,
         message: {
-          type: type,
+          type: "stack",
         },
         priority: priority.immediate,
       });
@@ -46,7 +44,7 @@ const handleAddStack = (params: any) => {
           id: "dropped",
           ns: ns,
           message: {
-            type: type,
+            type: "stack",
             target: target,
             data: data,
           },

@@ -39,7 +39,6 @@ export const send = (params: wsMsg): void => {
   if (params.ns) id = `${params.ns}-${id}`;
 
   const priority = priorityString.get(params.priority) || "deferred";
-  console.log(id);
 
   Shiny.setInputValue(id, params.message, { priority: priority });
 };

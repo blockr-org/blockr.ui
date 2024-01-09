@@ -40,8 +40,7 @@ addStackUI <- function( # nolint
       `data-target` = target,
       id = ns("addWrapper"),
       class = "add-stack-wrapper",
-      available_stacks() |>
-        map(stackPill, ns)
+      stackPill("Add stack", ns)
     )
   )
 }
@@ -110,15 +109,9 @@ stacksArea <- function(id = NULL, class = "", style = "", ...){ # nolint
   )
 }
 
-available_stacks <- function(){
-  c(
-    "data"
-  )
-}
-
 stackPill <- function(stack, ns){ # nolint
   span(
-    class = "add-stack badge bg-primary cursor-pointer",
+    class = "add-stack badge bg-primary cursor-pointer fs-5 cursor-pointer",
     draggable = "true",
     id = ns(stack),
     stack
