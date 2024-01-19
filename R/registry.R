@@ -7,6 +7,7 @@ BLOCK_LIST_ID <- "blockList" # nolint
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param delay Delay in milliseconds before binding JavaScript.
+#' @param session Shiny session.
 #' 
 #' @return [shiny::reactiveValues] with `block` to add where, .
 #'  as well as `error` to display.
@@ -108,6 +109,20 @@ block_list_server <- function(
         )
       )
     }
+  )
+}
+
+#' @rdname blockList
+#' @export
+block_list_bind <- function(
+  session = shiny::getDefaultReactiveDomain(),
+  delay = 0L
+){
+  send_message <- make_send_message("block-list")
+
+  send_message(
+    "bind", 
+    delay = delay
   )
 }
 

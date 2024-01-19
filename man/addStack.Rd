@@ -8,8 +8,8 @@
 \usage{
 addStackUI(
   id,
-  content = shiny::span(shiny::icon("plus"), "Add Stack"),
-  class = "badge bg-primary fs-4",
+  content = shiny::span(shiny::icon("plus"), "Stack"),
+  class = "badge bg-primary fs-5 mx-2",
   target = ".stack-target",
   toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
 )

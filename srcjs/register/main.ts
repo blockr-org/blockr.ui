@@ -13,6 +13,12 @@ $(() => {
       popovers();
     }, msg.delay);
   });
+
+  Shiny.addCustomMessageHandler("block-list-bind", (msg) => {
+    setTimeout(() => {
+      sortStack();
+    }, msg.delay);
+  });
 });
 
 let ns = "";

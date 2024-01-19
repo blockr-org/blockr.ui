@@ -15,8 +15,8 @@
 #' @export
 addStackUI <- function( # nolint
   id,
-  content = shiny::span(shiny::icon("plus"), "Add Stack"),
-  class = "badge bg-primary fs-4",
+  content = shiny::span(shiny::icon("plus"), "Stack"),
+  class = "badge bg-primary fs-5 mx-2",
   target = ".stack-target",
   toast_position = c(
     "top-right", 
@@ -45,7 +45,7 @@ addStackUI <- function( # nolint
       id = ns("addWrapper"),
       class = "add-stack-wrapper",
       span(
-        class = "add-stack cursor-pointer",
+        class = sprintf("add-stack cursor-pointer %s", class),
         draggable = "true",
         id = ns("addStack"),
         content |>

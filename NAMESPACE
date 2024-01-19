@@ -3,6 +3,7 @@
 export(addStackUI)
 export(add_stack_server)
 export(blockListUI)
+export(block_list_bind)
 export(block_list_server)
 export(dependency)
 export(stacksArea)

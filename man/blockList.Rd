@@ -4,6 +4,7 @@
 \alias{blockList}
 \alias{blockListUI}
 \alias{block_list_server}
+\alias{block_list_bind}
 \title{Block List Module}
 \usage{
 blockListUI(
@@ -13,6 +14,8 @@ blockListUI(
 )
 
 block_list_server(id, feedback = TRUE, delay = 0L)
+
+block_list_bind(session = shiny::getDefaultReactiveDomain(), delay = 0L)
 }
 \arguments{
 \item{id}{ID of module.}
@@ -24,6 +27,8 @@ block_list_server(id, feedback = TRUE, delay = 0L)
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
 
 \item{delay}{Delay in milliseconds before binding JavaScript.}
+
+\item{session}{Shiny session.}
 }
 \value{
 \link[shiny:reactiveValues]{shiny::reactiveValues} with \code{block} to add where, .
