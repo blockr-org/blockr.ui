@@ -155,7 +155,7 @@ blockPill <- function( # nolint
     `data-bs-title` = block_name(block),
     `data-bs-content` = block_descr(block),
     draggable = TRUE,
-    class = sprintf("mb-1 badge add-block bg-%s", block_color(block))
+    class = sprintf("cursor-pointer mb-1 badge add-block bg-%s", block_color(block))
   )
 }
 
@@ -174,4 +174,3 @@ block_color <- function(block) {
 
   return("info")
 }
-

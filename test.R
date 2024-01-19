@@ -6,7 +6,6 @@ ui <- fluidPage(
     version = 5,
     bootswatch = "minty"
   ),
-  lockUI(),
   blockListUI("list"),
   hr(),
   actionButton("modal", "show modal"),
@@ -26,9 +25,7 @@ ui <- fluidPage(
 )
 
 server <- \(input, output, session){
-  add <- add_stack_server("add")
-
-  lock_server()
+  add <- add_stack_server("add", delay = 1000)
 
   observeEvent(add$dropped(), {
     print(add$dropped())

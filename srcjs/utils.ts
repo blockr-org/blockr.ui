@@ -19,6 +19,8 @@ export interface errorMsg {
 }
 
 export const error = (params: errorMsg): void => {
+  showError(params);
+
   const msg: wsMsg = {
     ns: params.ns,
     id: "error",
@@ -29,9 +31,8 @@ export const error = (params: errorMsg): void => {
     priority: priority.immediate,
   };
 
-  console.error(`${msg.message.message}`);
-  showError(params);
   send(msg);
+  console.error(`${msg.message.message}`);
 };
 
 export const send = (params: wsMsg): void => {

@@ -7,12 +7,16 @@
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param delay Delay in milliseconds before binding JavaScript.
+#' @param content Content of the draggable item.
+#' @param class Class to pass to the draggable item.
 #' 
 #' @name addStack
 #' 
 #' @export
 addStackUI <- function( # nolint
   id,
+  content = shiny::span(shiny::icon("plus"), "Add Stack"),
+  class = "badge bg-primary fs-4",
   target = ".stack-target",
   toast_position = c(
     "top-right", 
@@ -40,7 +44,14 @@ addStackUI <- function( # nolint
       `data-target` = target,
       id = ns("addWrapper"),
       class = "add-stack-wrapper",
-      stackPill("Add stack", ns)
+      span(
+        class = "add-stack cursor-pointer",
+        draggable = "true",
+        id = ns("addStack"),
+        content |>
+          as.character() |>
+          shiny::HTML()
+      )
     )
   )
 }

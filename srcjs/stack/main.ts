@@ -3,7 +3,6 @@ import { priority } from "../priority";
 import { Error } from "../errors";
 
 let valid = false;
-let data = {};
 let target = "";
 const handleAddStack = (params: any) => {
   const draggables: JQuery = $(document)
@@ -46,7 +45,6 @@ const handleAddStack = (params: any) => {
           message: {
             type: "stack",
             target: target,
-            data: data,
           },
           priority: priority.immediate,
         });
@@ -76,7 +74,6 @@ const handleAddStack = (params: any) => {
     $(stackTarget).on("drop dragdrop", (e: any) => {
       valid = true;
       target = $(e.target).closest(stackTarget).attr("id");
-      data = $(e.target).data();
     });
   });
 };
