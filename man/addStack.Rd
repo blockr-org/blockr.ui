@@ -4,6 +4,7 @@
 \alias{addStack}
 \alias{addStackUI}
 \alias{add_stack_server}
+\alias{add_stack_bind}
 \title{Add Stack}
 \usage{
 addStackUI(
@@ -15,9 +16,16 @@ addStackUI(
 )
 
 add_stack_server(id, feedback = TRUE, delay = 0L)
+
+add_stack_bind(
+  ns = "",
+  feedback = TRUE,
+  session = shiny::getDefaultReactiveDomain(),
+  delay = 0L
+)
 }
 \arguments{
-\item{id}{The id of button stack.}
+\item{id, ns}{The id of add stack function.}
 
 \item{content}{Content of the draggable item.}
 
@@ -30,6 +38,8 @@ add_stack_server(id, feedback = TRUE, delay = 0L)
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
 
 \item{delay}{Delay in milliseconds before binding JavaScript.}
+
+\item{session}{Shiny session.}
 }
 \description{
 Create an "add stack" button.

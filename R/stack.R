@@ -2,13 +2,14 @@
 #' 
 #' Create an "add stack" button.
 #' 
-#' @param id The id of button stack.
+#' @param id,ns The id of add stack function.
 #' @param target Selector of target element where stacks can be dropped.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param delay Delay in milliseconds before binding JavaScript.
 #' @param content Content of the draggable item.
 #' @param class Class to pass to the draggable item.
+#' @param session Shiny session.
 #' 
 #' @name addStack
 #' 
@@ -86,6 +87,24 @@ add_stack_server <- function(
         )
       )
     }
+  )
+}
+
+#' @rdname addStack 
+#' @export
+add_stack_bind <- function(
+  ns = "",
+  feedback = TRUE,
+  session = shiny::getDefaultReactiveDomain(),
+  delay = 0L
+){
+  session$sendCustomMessage(
+    "add-stack-init", 
+    list(
+      feedback = feedback,
+      delay = delay,
+      ns = ns
+    )
   )
 }
 

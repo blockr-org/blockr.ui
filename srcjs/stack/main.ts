@@ -5,6 +5,7 @@ import { Error } from "../errors";
 let valid = false;
 let target = "";
 const handleAddStack = (params: any) => {
+  valid = false;
   const draggables: JQuery = $(document)
     .find(`#${params.ns}-addWrapper`)
     .find(".add-stack");
