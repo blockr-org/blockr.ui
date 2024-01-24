@@ -61,12 +61,12 @@ blockListUI <- function( # nolint
         tags$input(
           id = ns("query"),
           type = "text",
-          class = "form-control",
+          class = "form-control form-control-sm",
           placeholder = "search"
         ),
         tags$button(
           id = ns("search"),
-          class = "btn btn-primary",
+          class = "btn btn-primary btn-sm",
           icon("search")
         )
       ),
