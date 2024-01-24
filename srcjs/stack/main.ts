@@ -5,7 +5,6 @@ import { Error } from "../errors";
 let valid = false;
 let target = "";
 const handleAddStack = (params: any) => {
-  valid = false;
   const draggables: JQuery = $(document)
     .find(`#${params.ns}-addWrapper`)
     .find(".add-stack");
@@ -17,6 +16,7 @@ const handleAddStack = (params: any) => {
       .closest(".add-stack-wrapper")
       .data("target");
 
+    $(draggable).off("dragstart dragover dragenter dragend");
     $(draggable).on("dragstart", (e: any) => {
       e.originalEvent.dataTransfer.setData("text/plain", e.target?.id);
     });
