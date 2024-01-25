@@ -9,7 +9,8 @@
 \usage{
 addStackUI(
   id,
-  content = shiny::span(shiny::icon("plus"), "Stack"),
+  content = shiny::span(class = "badge bg-primary fs-5 mx-2", shiny::icon("plus"),
+    "Stack"),
   class = "badge bg-primary fs-5 mx-2",
   target = ".stack-target",
   toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
@@ -28,8 +29,6 @@ add_stack_bind(
 \item{id, ns}{The id of add stack function.}
 
 \item{content}{Content of the draggable item.}
-
-\item{class}{Class to pass to the draggable item.}
 
 \item{target}{Selector of target element where stacks can be dropped.}
 

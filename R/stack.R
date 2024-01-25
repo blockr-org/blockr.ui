@@ -8,7 +8,6 @@
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param delay Delay in milliseconds before binding JavaScript.
 #' @param content Content of the draggable item.
-#' @param class Class to pass to the draggable item.
 #' @param session Shiny session.
 #' 
 #' @name addStack
@@ -16,7 +15,11 @@
 #' @export
 addStackUI <- function( # nolint
   id,
-  content = shiny::span(shiny::icon("plus"), "Stack"),
+  content = shiny::span(
+    class = "badge bg-primary fs-5 mx-2",
+    shiny::icon("plus"), 
+    "Stack"
+  ),
   class = "badge bg-primary fs-5 mx-2",
   target = ".stack-target",
   toast_position = c(
@@ -46,7 +49,7 @@ addStackUI <- function( # nolint
       id = ns("addWrapper"),
       class = "add-stack-wrapper",
       span(
-        class = sprintf("add-stack cursor-pointer %s", class),
+        class = "add-stack cursor-pointer",
         draggable = "true",
         id = ns("addStack"),
         content |>
