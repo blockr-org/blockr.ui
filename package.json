@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "@types/bootstrap": "^5.2.10",
-    "@types/rstudio-shiny": "github:rstudio/shiny"
+    "@types/rstudio-shiny": "github:rstudio/shiny",
+    "ace-builds": "^1.32.3"
   }
 }

@@ -20,7 +20,6 @@ addStackUI <- function( # nolint
     shiny::icon("plus"), 
     "Stack"
   ),
-  class = "badge bg-primary fs-5 mx-2",
   target = ".stack-target",
   toast_position = c(
     "top-right", 
