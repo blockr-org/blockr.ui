@@ -21,7 +21,8 @@ ui <- fluidPage(
   stacksArea(
     class = "bg-success",
     style = "min-height:5rem;"
-  )
+  ),
+  createBlockUI("create")
 )
 
 server <- \(input, output, session){
@@ -60,6 +61,8 @@ server <- \(input, output, session){
   })
 
   osel <- block_list_server("offcanvaslist")
+
+  create <- create_block_server("create")
 }
 
 shinyApp(ui, server, options = list(port = 3000L))

@@ -1,4 +1,5 @@
 {
   "register": "./srcjs/register/main.ts",
-  "stack": "./srcjs/stack/main.ts"
+  "stack": "./srcjs/stack/main.ts",
+  "create": "./srcjs/create/main.ts"
 }
