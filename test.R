@@ -4,7 +4,7 @@ library(shiny)
 ui <- fluidPage(
   theme = bslib::bs_theme(
     version = 5,
-    bootswatch = "minty"
+    bootswatch = "materia"
   ),
   blockListUI("list"),
   hr(),

@@ -26,4 +26,53 @@ Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
 
     fieldEvents();
   });
+
+  $(`#${msg.nsPrefix}save`).on("click", (e): void => {
+    const fields: Field[] = [];
+
+    $(e.target)
+      .closest(".blockr-create-block")
+      .find(".blockr-create-field")
+      .each((_i, el) => {
+        const name = String($(el).find(".blockr-create-field-name").val());
+        const type = String($(el).find(".blockr-create-field-type").val());
+        fields.push({ name: name, type: type });
+      });
+
+    const block: Block = {
+      name: String($(`#${msg.nsPrefix}name`).val()),
+      type: String($(`#${msg.nsPrefix}type`).val()),
+      expression: editor.getValue(),
+      fields: fields,
+    };
+
+    if (block.fields.length == 0) {
+      Shiny.notifications.show({ html: "Must have at least one field" });
+      return;
+    }
+
+    if (block.name == "") {
+      Shiny.notifications.show({ html: "Must set a block name" });
+      return;
+    }
+
+    if (block.expression == "") {
+      Shiny.notifications.show({ html: "Expression is not set" });
+      return;
+    }
+
+    Shiny.setInputValue(`${msg.nsPrefix}newBlock`, block);
+  });
 });
+
+type Block = {
+  name: string;
+  type: string;
+  expression: string;
+  fields: Field[];
+};
+
+type Field = {
+  name: string;
+  type: string;
+};

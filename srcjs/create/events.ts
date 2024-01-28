@@ -1,5 +1,10 @@
 export const fieldEvents = (): void => {
   $(".blockr-create-field-name").off("keyup");
+  $(".blockr-create-field-delete").off("click");
+
+  $(".blockr-create-field-delete").on("click", (e) => {
+    $(e.target).closest(".blockr-create-field").remove();
+  });
 
   $(".blockr-create-field-name").on("keyup", (e) => {
     const name: string = String($(e.target).val());

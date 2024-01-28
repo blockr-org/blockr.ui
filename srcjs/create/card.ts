@@ -14,8 +14,15 @@ export const fieldCard = (params: FieldCardParams): string => {
     .join("");
 
   return `<div class="card blockr-create-field mb-2">
-    <div class = "card-body">
-      <input type="text" class="blockr-create-field-name mb-2 form-control form-control-sm" placeholder="Field name">
+    <div class="card-body">
+      <div class="d-flex">
+        <div class="flex-grow-1">
+          <input type="text" class="blockr-create-field-name mb-2 form-control form-control-sm" placeholder="Field name">
+        </div>
+        <div class="flex-shrink-1">
+          <button class="ms-2 btn btn-sm bg-danger blockr-create-field-delete"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
       <select class = "form-select blockr-create-field-type">
         ${options}
       </select>
