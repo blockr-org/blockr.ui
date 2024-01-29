@@ -1,5 +1,6 @@
-import { fieldCard, FieldCardParams } from "./card";
+import { fieldCard, Field } from "./card";
 import { fieldEvents } from "./events";
+import { blockList } from "./list";
 const Ace = require("ace-builds/src-noconflict/ace");
 require("ace-builds/src-noconflict/mode-r.js");
 require("ace-builds/src-noconflict/snippets/r.js");
@@ -9,6 +10,7 @@ Ace.require("ace/ext/language_tools");
 Ace.require("ace/mode/r");
 
 Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
+  console.log(msg);
   const editor = Ace.edit(`${msg.nsPrefix}expression`);
 
   editor.session.setMode("ace/mode/r");
@@ -19,9 +21,15 @@ Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
     enableLiveAutocompletion: true,
   });
 
+  blockList(msg);
+
+  // cheap reset
+  $(`#${msg.nsPrefix}save`).off("click");
+  $(`#${msg.nsPrefix}add`).off("click");
+
   $(`#${msg.nsPrefix}add`).on("click", () => {
-    const params: FieldCardParams = {};
-    const field = fieldCard(params);
+    const f: Field = { name: "", type: "numeric" };
+    const field = fieldCard(f);
     $(`#${msg.nsPrefix}fields`).append(field);
 
     fieldEvents();
@@ -61,6 +69,9 @@ Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
       return;
     }
 
+    $(`#${msg.nsPrefix}fields`).html("");
+    $(`#${msg.nsPrefix}name`).val("");
+
     Shiny.setInputValue(`${msg.nsPrefix}newBlock`, block);
   });
 });
@@ -70,9 +81,4 @@ type Block = {
   type: string;
   expression: string;
   fields: Field[];
-};
-
-type Field = {
-  name: string;
-  type: string;
 };

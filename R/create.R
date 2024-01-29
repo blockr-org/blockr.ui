@@ -18,7 +18,7 @@ createBlockUI <- function(id){ # nolint
       div(
         class = "d-flex",
         div(
-          class = "flex-shrink-1",
+          class = "flex-shrink-1 mx-2",
           h2("Block list"),
           div(
             id = ns("blocks")
@@ -29,15 +29,15 @@ createBlockUI <- function(id){ # nolint
           div(
             class = "d-flex",
             div(
-              class = "flex-grow-1",
+              class = "flex-grow-1 px-1",
               tags$input(
-                class = "blockr-create-name form-control",
+                class = "blockr-create-name form-control mt-2 me-2",
                 id = ns("name"),
-                placeholder = "Name"
+                placeholder = "Block name"
               )
             ),
             div(
-              class = "flex-shrink-1",
+              class = "flex-shrink-1 px-1",
               selectInput(
                 ns("type"),
                 "",
@@ -50,7 +50,7 @@ createBlockUI <- function(id){ # nolint
               )
             ),
             div(
-              class = "flex-shrink-1",
+              class = "flex-shrink-1 px-1 py-2",
               tags$button(
                 class = "ms-2 btn btn-secondary",
                 id = ns("save"),
@@ -93,16 +93,41 @@ create_block_server <- function(id){
       custom_blocks <- reactiveVal(0L)
 
       observe({
+        custom_blocks()
         send_message <- make_send_message("blockr-create")
           
         send_message(
           "init",
-          id = id
+          id = id,
+          blocks = available_blocks() |>
+            lapply(\(block) {
+              if(!"blockrui_custom_block" %in% attr(block, "classes"))
+                return()
+
+              blk <- block()
+
+              fields <- blk |>
+                purrr::map2(names(blk), \(field, name) {
+                  list(
+                    name = name,
+                    type = sprintf("new_%s", class(field)[1])
+                  )
+                }) |>
+                unname()
+
+              list(
+                name = attr(block, "name"),
+                type = ifelse(inherits(blk, "data_block"), "data", "transform"),
+                fields = fields,
+                expression = deparse(attr(blk, "expr"))
+              )
+            }) |>
+            purrr::keep(\(block) !is.null(block)) |>
+            unname()
         )
       })
 
       observeEvent(input$newBlock, {
-        print(input$newBlock)
         create_new_block(
           input$newBlock
         )
@@ -115,46 +140,43 @@ create_block_server <- function(id){
 }
 
 create_new_block <- function(block){
-  nb <- new_block(
-    fields = create_fields(block$fields),
-    expr = create_expression(block$expression),
-    class = create_class(block)
-  )
-
   register_block(
     \(...){
-      initialize_block(nb(...))
+      new_block(
+        fields = create_fields(block$fields),
+        expr = create_expression(block$expression),
+        class = create_class(block)
+      )
     }, 
     block$name, 
     "Description", 
     create_class(block), 
-    input = "data.frame",
+    input = ifelse(block$type == "data", NA_character_, "data.frame"),
     output = "data.frame"
   )
 }
 
 create_class <- function(block){
   inheritance <- sprintf("%s_block", block$type)
-
   c(
     sprintf("%s_block", block$name),
+    "blockrui_custom_block",
     inheritance
   )
 }
 
 create_expression <- function(expr_str){
-  quote(expr_str)
+  enquote(expr_str)
 }
 
 create_fields <- function(fields){
-  fields <- fields |>
+  fields_new <- fields |>
     lapply(\(field) {
-      fn <- sprintf("new_%s_field", field$type)
-      do.call(fn, list())
+      do.call(field$type, list())
     })
 
-  names(fields) <- fields |>
+  names(fields_new) <- fields |>
     sapply(\(field) field$name)
 
-  return(fields)
+  return(fields_new)
 }

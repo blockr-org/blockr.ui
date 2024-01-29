@@ -1,5 +1,6 @@
-export type FieldCardParams = {
-  type?: string;
+export type Field = {
+  name: string;
+  type: string;
 };
 
 const types: string[] = [
@@ -13,12 +14,12 @@ const types: string[] = [
   "filebrowser",
 ];
 
-export const fieldCard = (params: FieldCardParams): string => {
+export const fieldCard = (params: Field): string => {
   const options: string = types
     .map((type) => {
       return `<option ${
-        params.type == type ? "selected" : ""
-      } value="${type}">${type}</option>`;
+        params.type == `new_${type}_field` ? "selected" : ""
+      } value="new_${type}_field">${type}</option>`;
     })
     .join("");
 
@@ -26,7 +27,9 @@ export const fieldCard = (params: FieldCardParams): string => {
     <div class="card-body">
       <div class="d-flex">
         <div class="flex-grow-1">
-          <input type="text" class="blockr-create-field-name mb-2 form-control form-control-sm" placeholder="Field name">
+          <input value="${
+            params.name
+          }" type="text" class="blockr-create-field-name mb-2 form-control form-control-sm" placeholder="Field name">
         </div>
         <div class="flex-shrink-1">
           <button class="ms-2 btn btn-sm bg-danger blockr-create-field-delete"><i class="fas fa-trash"></i></button>
@@ -36,7 +39,11 @@ export const fieldCard = (params: FieldCardParams): string => {
         ${options}
       </select>
       <p class = "blockr-create-field-preview mt-1 ms-1">
-        <span class='text-danger'>must give the field a name</span>
+        ${
+          params.name.length <= 0
+            ? "<span class='text-danger'>must give the field a name</span>"
+            : ""
+        }
       </p>
     </div>
   </div>`;
