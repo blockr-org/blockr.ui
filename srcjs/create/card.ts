@@ -2,7 +2,16 @@ export type FieldCardParams = {
   type?: string;
 };
 
-const types: string[] = ["numeric", "column", "character"];
+const types: string[] = [
+  "numeric",
+  "range",
+  "variable",
+  "string",
+  "switch",
+  "submit",
+  "upload",
+  "filebrowser",
+];
 
 export const fieldCard = (params: FieldCardParams): string => {
   const options: string = types

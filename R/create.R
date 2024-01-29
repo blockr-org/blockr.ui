@@ -90,6 +90,8 @@ create_block_server <- function(id){
       output, 
       session
     ){
+      custom_blocks <- reactiveVal(0L)
+
       observe({
         send_message <- make_send_message("blockr-create")
           
@@ -101,7 +103,58 @@ create_block_server <- function(id){
 
       observeEvent(input$newBlock, {
         print(input$newBlock)
+        create_new_block(
+          input$newBlock
+        )
+        custom_blocks(custom_blocks() + 1L)
       })
+
+      return(custom_blocks)
     }
   )
+}
+
+create_new_block <- function(block){
+  nb <- new_block(
+    fields = create_fields(block$fields),
+    expr = create_expression(block$expression),
+    class = create_class(block)
+  )
+
+  register_block(
+    \(...){
+      initialize_block(nb(...))
+    }, 
+    block$name, 
+    "Description", 
+    create_class(block), 
+    input = "data.frame",
+    output = "data.frame"
+  )
+}
+
+create_class <- function(block){
+  inheritance <- sprintf("%s_block", block$type)
+
+  c(
+    sprintf("%s_block", block$name),
+    inheritance
+  )
+}
+
+create_expression <- function(expr_str){
+  quote(expr_str)
+}
+
+create_fields <- function(fields){
+  fields <- fields |>
+    lapply(\(field) {
+      fn <- sprintf("new_%s_field", field$type)
+      do.call(fn, list())
+    })
+
+  names(fields) <- fields |>
+    sapply(\(field) field$name)
+
+  return(fields)
 }
