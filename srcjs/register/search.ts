@@ -1,6 +1,9 @@
 import { AnyFunction } from "rstudio-shiny/srcts/types/src/utils/extraTypes";
 
 export const handleSearch = (params: any) => {
+  $(`#${params.ns}-search`).off("click");
+  $(`#${params.ns}-query`).off("keyup");
+
   $(`#${params.ns}-search`).on("click", search(params));
   // so it also works on Enter key in query
   $(`#${params.ns}-query`).on("keyup", search(params));

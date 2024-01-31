@@ -10,7 +10,6 @@ Ace.require("ace/ext/language_tools");
 Ace.require("ace/mode/r");
 
 Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
-  console.log(msg);
   const editor = Ace.edit(`${msg.nsPrefix}expression`);
 
   editor.session.setMode("ace/mode/r");
@@ -21,7 +20,7 @@ Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
     enableLiveAutocompletion: true,
   });
 
-  blockList(msg);
+  blockList(msg, editor);
 
   // cheap reset
   $(`#${msg.nsPrefix}save`).off("click");
@@ -71,6 +70,7 @@ Shiny.addCustomMessageHandler("blockr-create-init", (msg: any) => {
 
     $(`#${msg.nsPrefix}fields`).html("");
     $(`#${msg.nsPrefix}name`).val("");
+    editor.setValue("");
 
     Shiny.setInputValue(`${msg.nsPrefix}newBlock`, block);
   });

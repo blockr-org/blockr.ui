@@ -31,7 +31,7 @@ createBlockUI <- function(id){ # nolint
             div(
               class = "flex-grow-1 px-1",
               tags$input(
-                class = "blockr-create-name form-control mt-2 me-2",
+                class = "blockr-create-name form-control mt-4 me-2",
                 id = ns("name"),
                 placeholder = "Block name"
               )
@@ -50,15 +50,15 @@ createBlockUI <- function(id){ # nolint
               )
             ),
             div(
-              class = "flex-shrink-1 px-1 py-2",
+              class = "flex-shrink-1 px-1 pt-4",
               tags$button(
-                class = "ms-2 btn btn-secondary",
+                class = "ms-2 btn btn-secondary btn-sm",
                 id = ns("save"),
                 icon("save"),
                 "Save"
               ),
               tags$button(
-                class = "btn btn-primary",
+                class = "btn btn-primary btn-sm",
                 id = ns("add"),
                 icon("plus"),
                 "Field"

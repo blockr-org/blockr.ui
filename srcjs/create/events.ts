@@ -27,6 +27,8 @@ export const fieldEvents = (): void => {
       return;
     }
 
-    $preview.html(`Use <code>.(${name})</code> in the expression below`);
+    $preview.html(
+      `<span class="text-muted">Use <code>.(${name})</code> in the expression below</span>`,
+    );
   });
 };
