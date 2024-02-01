@@ -3,8 +3,7 @@ library(shiny)
 
 ui <- fluidPage(
   theme = bslib::bs_theme(
-    version = 5,
-    bootswatch = "materia"
+    version = 5
   ),
   blockListUI("list"),
   hr(),
@@ -19,7 +18,8 @@ ui <- fluidPage(
   addStackUI("add"),
   hr(),
   stacksArea(
-    class = "bg-success",
+    id = "stacksArea",
+    class = "border border-dark",
     style = "min-height:5rem;"
   ),
   createBlockUI("create")
@@ -28,8 +28,13 @@ ui <- fluidPage(
 server <- \(input, output, session){
   add <- add_stack_server("add", delay = 1000)
 
+  stacks <- list()
+  stacks_servers <- list()
   observeEvent(add$dropped(), {
-    print(add$dropped())
+    stack <- new_stack()
+    stacks <<- c(stacks, stack)
+    insertUI("#stacksArea", "afterBegin", ui = generate_ui(stack))
+    stacks_servers <<- c(stacks_servers, generate_server(stack))
   })
 
   observeEvent(add$started(), {
