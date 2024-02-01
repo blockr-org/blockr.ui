@@ -26,6 +26,24 @@ let index = 0;
 let type = "";
 let valid = false;
 
+const getBlockPosition = (el: HTMLElement) => {
+  const $block = $(el).closest(".block");
+  const id = $block.data("value");
+
+  let position = 0;
+  $block
+    .closest(".stack")
+    .find(".block")
+    .each((index: number, block: HTMLElement): void => {
+      console.log($(block).data("value"), id);
+      if ($(block).data("value") != id) return;
+
+      position = index + 1;
+    });
+
+  return position;
+};
+
 const sortStack = () => {
   $(".stack").off("dragover dragenter drop dragdrop");
   $(".stack").on("dragover", (e: any) => {
@@ -44,6 +62,7 @@ const sortStack = () => {
       message: {
         type: type,
         index: index,
+        position: getBlockPosition(e.target),
         target: $(e.target).closest(".stack").attr("id"),
       },
       priority: priority.immediate,
