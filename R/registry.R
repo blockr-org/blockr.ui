@@ -75,7 +75,7 @@ blockListUI <- function( # nolint
       headers("Transform"),
       blockWrapper(blocks, "transform_block"),
       headers("Visualise"),
-      blockWrapper(blocks, "visualise_block")
+      blockWrapper(blocks, "plot_block")
     )
   )
 }
