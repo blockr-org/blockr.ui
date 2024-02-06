@@ -35,7 +35,6 @@ const getBlockPosition = (el: HTMLElement) => {
     .closest(".stack")
     .find(".block")
     .each((index: number, block: HTMLElement): void => {
-      console.log($(block).data("value"), id);
       if ($(block).data("value") != id) return;
 
       position = index + 1;
