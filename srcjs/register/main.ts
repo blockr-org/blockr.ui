@@ -55,6 +55,7 @@ const sortStack = () => {
 
   $(".stack").on("drop dragdrop", (e: any) => {
     valid = true;
+    if (index < 0) return;
     send({
       id: "dropped",
       ns: ns,
@@ -66,6 +67,7 @@ const sortStack = () => {
       },
       priority: priority.immediate,
     });
+    index = -1;
   });
 };
 
