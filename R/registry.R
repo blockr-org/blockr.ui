@@ -166,9 +166,9 @@ blockPill <- function( # nolint
     block_name(block),
     `data-index` = block_index(block),
     `data-description` = block_descr(block),
-    `data-bs-toggle` = "popover",
-    `data-bs-title` = block_name(block),
-    `data-bs-content` = block_descr(block),
+    `data-bs-toggle` = "tooltip",
+    `data-bs-title` = block_tooltip(block),
+    `data-bs-html` = "true",
     draggable = TRUE,
     class = sprintf("cursor-pointer mb-1 badge add-block bg-%s", block_color(block))
   )
@@ -188,4 +188,12 @@ block_color <- function(block) {
     return("secondary")
 
   return("info")
+}
+
+block_tooltip <- function(x){
+  sprintf(
+    "<strong>%s</strong><br/>%s",
+    block_name(x),
+    block_descr(x)
+  )
 }
