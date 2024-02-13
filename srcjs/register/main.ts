@@ -2,7 +2,7 @@ import { error, send, errorMsg, popovers, getNamespace } from "../utils";
 import { Error } from "../errors";
 import { priority } from "../priority";
 import { handleSearch } from "./search";
-import { tooltipOff } from "./tooltip";
+import { tooltipOff, tooltipOn } from "./tooltip";
 
 $(() => {
   Shiny.addCustomMessageHandler("block-list-init", (msg) => {
@@ -12,21 +12,16 @@ $(() => {
       });
       handleSearch(msg);
       popovers();
+      tooltipOn();
     }, msg.delay);
   });
 
   Shiny.addCustomMessageHandler("block-list-bind", (msg) => {
     setTimeout(() => {
       sortStack();
+      tooltipOn();
     }, msg.delay);
   });
-
-  const tooltipTriggerList = document.querySelectorAll(
-    '[data-bs-toggle="tooltip"]',
-  );
-  [...tooltipTriggerList].map(
-    (tooltipTriggerEl) => new window.bootstrap.Tooltip(tooltipTriggerEl),
-  );
 });
 
 let ns = "";
