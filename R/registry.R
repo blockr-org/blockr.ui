@@ -2,15 +2,19 @@ BLOCK_LIST_ID <- "blockList" # nolint
 
 #' Block List Module
 #' 
+#' Display a list of draggable blocks.
+#' 
 #' @param id ID of module.
 #' @param headers Function to use for headers.
 #' @param feedback Whether to notify user of errors, warnings, and more.
 #' @param toast_position Position of toast, only used if `feedback` is `TRUE`.
 #' @param delay Delay in milliseconds before binding JavaScript.
+#' @param max_height Maximum height of block list.
 #' @param session Shiny session.
 #' 
-#' @return [shiny::reactiveValues] with `block` to add where, .
-#'  as well as `error` to display.
+#' @details The list is server-side rendered.
+#' 
+#' @return A named `list` containing the following reactives: `error`, `started`, and `dropped`.
 #' 
 #' @name blockList
 #' 
@@ -27,19 +31,14 @@ blockListUI <- function( # nolint
     "top-left", 
     "bottom-right", 
     "bottom-left"
-  )
+  ),
+  max_height = "100vh"
 ) {
   stopifnot(!missing(id))
   ns <- NS(id)
 
-  reg <- available_blocks()
-
-  # we use map2 because imap uses names instead of indices
-  blocks <- reg |>
-    map2(seq_along(reg), \(block, index){
-      attr(block, "index") <- index
-      return(block)
-    })
+  blocks <- get_blocks() |>
+    utils::head(10)
 
   toast_position <- match.arg(toast_position)
 
@@ -70,12 +69,13 @@ blockListUI <- function( # nolint
           icon("search")
         )
       ),
-      headers("Data"),
-      blockWrapper(blocks, "data_block"),
-      headers("Transform"),
-      blockWrapper(blocks, "transform_block"),
-      headers("Visualise"),
-      blockWrapper(blocks, "plot_block")
+      div(
+        id = ns("scrollable"),
+        class = "blockr-registry-list",
+        style = sprintf("max-height: %s; overflow-y: auto;", max_height),
+        blockWrapper(blocks, ns)
+      ),
+      tags$p(class = "blockr-description w-100 m-0 p-0", style = "min-height: 1.5rem;")
     )
   )
 }
@@ -91,6 +91,31 @@ block_list_server <- function(
     id,
     \(input, output, session){
       send_message <- make_send_message("block-list")
+
+      observe({
+        search <- session$registerDataObj(
+          "registry-search",
+          list(
+            registry = get_blocks()
+          ),
+          search_registry
+        )
+
+        scroll <- session$registerDataObj(
+          "registry-scroll",
+          list(
+            registry = get_blocks()
+          ),
+          scroll_registry
+        )
+
+        send_message(
+          "endpoints", 
+          id = session$ns(BLOCK_LIST_ID),
+          scroll = scroll,
+          search = search
+        )
+      })
 
       observe({
         send_message(
@@ -132,16 +157,15 @@ block_list_bind <- function(
 #' Used to enable draggable.
 #' 
 #' @param blocks List of blocks to wrap.
-#' @param cls Class to filter
 #' 
 #' @importFrom purrr keep map
 #' 
 #' @keywords internal
-blockWrapper <- function(blocks, cls) { # nolint
+blockWrapper <- function(blocks, ns) { # nolint
   div(
     class = "block-list-wrapper",
+    id = ns("scrollable-child"),
     blocks |>
-      blocks_filter(cls) |>
       map(blockPill)
   )
 }
@@ -165,10 +189,8 @@ blockPill <- function( # nolint
   p(
     block_name(block),
     `data-index` = block_index(block),
+    `data-name` = block_name(block),
     `data-description` = block_descr(block),
-    `data-bs-toggle` = "tooltip",
-    `data-bs-title` = block_tooltip(block),
-    `data-bs-html` = "true",
     draggable = TRUE,
     class = sprintf("cursor-pointer mb-1 badge add-block bg-%s", block_color(block))
   )
@@ -190,10 +212,76 @@ block_color <- function(block) {
   return("info")
 }
 
-block_tooltip <- function(x){
-  sprintf(
-    "<strong>%s</strong><br/>%s",
-    block_name(x),
-    block_descr(x)
+scroll_registry <- function(data, req){
+  query <- parseQueryString(req$QUERY_STRING)
+  min <- as.integer(query$min)
+  max <- query$max
+
+  if(!length(max))
+    max <- min + 5L
+
+  max <- as.integer(max)
+
+  if(min >= length(data$registry))
+    return(
+      shiny::httpResponse(
+        200L,
+        content_type = "application/json",
+        content = jsonlite::toJSON(list(), auto_unbox = TRUE)
+      )
+    )
+
+  if(max > length(data$registry))
+    max <- length(data$registry)
+
+  blocks <- data$registry[min:max] |>
+    map(\(x){
+      list(
+        name = block_name(x),
+        description = block_descr(x),
+        index = block_index(x),
+        type = attr(x, "classes")
+      )
+    }) |>
+    keep(\(x) !is.null(x)) |>
+    unname()
+
+  shiny::httpResponse(
+    200L,
+    content_type = "application/json",
+    content = jsonlite::toJSON(blocks, auto_unbox = TRUE, dataframe = "rows", force = TRUE)
+  )
+}
+
+search_registry <- function(data, req){
+  query <- parseQueryString(req$QUERY_STRING)
+
+  blocks <- data$registry |>
+    map(\(x){
+      name <- block_name(x)
+      description <- block_descr(x)
+
+      obj <- list(
+        name = name,
+        description = description,
+        index = block_index(x),
+        type = attr(x, "classes")
+      )
+
+      if(grepl(query$query, name))
+        return(obj)
+
+      if(grepl(query$query, description))
+        return(obj)
+
+      return(NULL)
+    }) |>
+    keep(\(x) !is.null(x)) |>
+    unname()
+
+  shiny::httpResponse(
+    200L,
+    content_type = "application/json",
+    content = jsonlite::toJSON(blocks, auto_unbox = TRUE, dataframe = "rows", force = TRUE)
   )
 }

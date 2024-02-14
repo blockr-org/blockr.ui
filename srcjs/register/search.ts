@@ -1,11 +1,16 @@
 import { AnyFunction } from "rstudio-shiny/srcts/types/src/utils/extraTypes";
+import { renderPills } from "./render";
+import { bindScroll, unbindScroll } from "./scroll";
+
+export const bindSearch = (params: any) => {
+  handleSearch(params);
+};
 
 export const handleSearch = (params: any) => {
   $(`#${params.ns}-search`).off("click");
   $(`#${params.ns}-query`).off("keyup");
 
   $(`#${params.ns}-search`).on("click", search(params));
-  // so it also works on Enter key in query
   $(`#${params.ns}-query`).on("keyup", search(params));
 };
 
@@ -17,26 +22,24 @@ const search = (params: any): AnyFunction => {
     const queryNode: JQuery = $(`#${params.ns}-query`);
     const query: string = String(queryNode?.val());
 
-    // faster way to reset search
+    $(target).closest(".blockr-registry").find(".block-list-wrapper").html("");
+
     if (query == "") {
-      $(target).closest(".blockr-registry").find(".add-block").show();
+      fetch(`${params.scroll}&min=1&max=10`)
+        .then((res) => res.json())
+        .then((data) => {
+          renderPills(params, data);
+          bindScroll(params);
+        });
+
       return;
     }
 
-    // toggle blocks based on query match
-    $(target)
-      .closest(".blockr-registry")
-      .find(".add-block")
-      .each((_, pill) => {
-        if (
-          $(pill).data("description").includes(query) ||
-          $(pill).text().includes(query)
-        ) {
-          $(pill).show();
-          return;
-        }
-
-        $(pill).hide();
+    fetch(`${params.search}&query=${encodeURIComponent(query)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        renderPills(params, data);
+        unbindScroll(params);
       });
   };
 };
