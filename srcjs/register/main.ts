@@ -2,7 +2,6 @@ import { error, send, errorMsg, popovers, getNamespace } from "../utils";
 import { Error } from "../errors";
 import { priority } from "../priority";
 import { handleSearch } from "./search";
-import { tooltipOff, tooltipOn } from "./tooltip";
 
 $(() => {
   Shiny.addCustomMessageHandler("block-list-init", (msg) => {
@@ -12,14 +11,12 @@ $(() => {
       });
       handleSearch(msg);
       popovers();
-      tooltipOn();
     }, msg.delay);
   });
 
   Shiny.addCustomMessageHandler("block-list-bind", (msg) => {
     setTimeout(() => {
       sortStack();
-      tooltipOn();
     }, msg.delay);
   });
 });
@@ -84,7 +81,6 @@ const sortable = (parent: HTMLElement, params: any) => {
     .find(".add-block")
     .each((_, el) => {
       $(el).on("dragstart", (e: any) => {
-        tooltipOff(e.target);
         type = $(e.target).data("type");
         index = $(e.target).data("index");
         ns = getNamespace($(e.target).closest(".blockr-registry").attr("id"));
