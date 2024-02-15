@@ -13,9 +13,10 @@ export const description = () => {
       .closest(".blockr-registry")
       .find(".blockr-description")
       .html(
-        `<small>${$el.data("icon") || defaultIcon}${$el.data(
-          "description",
-        )}</small>`,
+        `<p class="p-0">
+        ${$el.data("icon") || defaultIcon}
+        <strong>${$el.data("name") || ""}</strong><br/>
+        <small>${$el.data("description") || ""}</small></p>`,
       );
 
     highlight($el.closest(".blockr-registry").find(".blockr-description"));
@@ -35,9 +36,9 @@ export const description = () => {
 };
 
 const highlight = (el: JQuery<HTMLElement>) => {
-  $(el).addClass("border border-primary p-2 my-1");
+  $(el).addClass("rounded border border-primary p-1 my-1");
 };
 
 const downlight = (el: JQuery<HTMLElement>) => {
-  $(el).removeClass("border border-primary p-2 my-1");
+  $(el).removeClass("rounded border border-primary p-1 my-1");
 };

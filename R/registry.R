@@ -75,7 +75,7 @@ blockListUI <- function( # nolint
         style = sprintf("max-height:%s;overflow-y:scroll;", max_height),
         blockWrapper(blocks, ns)
       ),
-      tags$p(class = "blockr-description w-100 m-0 p-0", style = "min-height: 1.5rem;")
+      tags$p(class = "blockr-description w-100 m-0 p-0")
     )
   )
 }

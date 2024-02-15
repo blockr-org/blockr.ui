@@ -18,7 +18,8 @@ export const bindScroll = (params: any) => {
       return;
     }
 
-    fetchMore(params);
+    unbindScroll(params);
+    fetchMore(params).then(() => bindScroll(params));
   });
 };
 
@@ -43,6 +44,7 @@ async function fetchUntilScrollable(params: any) {
       if (!data.length) return;
 
       renderPills(params, data);
+
       if (
         $(`#${params.ns}-scrollable-child`).height() <=
         $(`#${params.ns}-scrollable`).height()
