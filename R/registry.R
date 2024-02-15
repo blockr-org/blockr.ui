@@ -72,7 +72,7 @@ blockListUI <- function( # nolint
       div(
         id = ns("scrollable"),
         class = "blockr-registry-list",
-        style = sprintf("max-height: %s; overflow-y: auto;", max_height),
+        style = sprintf("max-height:%s;overflow-y:scroll;", max_height),
         blockWrapper(blocks, ns)
       ),
       tags$p(class = "blockr-description w-100 m-0 p-0", style = "min-height: 1.5rem;")
@@ -113,7 +113,8 @@ block_list_server <- function(
           "endpoints", 
           id = session$ns(BLOCK_LIST_ID),
           scroll = scroll,
-          search = search
+          search = search,
+          delay = delay
         )
       })
 
@@ -191,7 +192,8 @@ blockPill <- function( # nolint
     `data-index` = block_index(block),
     `data-name` = block_name(block),
     `data-description` = block_descr(block),
-    draggable = TRUE,
+    `data-icon` = ...block_icon(block),
+    draggable = "true",
     class = sprintf("cursor-pointer mb-1 badge add-block bg-%s", block_color(block))
   )
 }
@@ -240,7 +242,8 @@ scroll_registry <- function(data, req){
         name = block_name(x),
         description = block_descr(x),
         index = block_index(x),
-        type = attr(x, "classes")
+        classes = attr(x, "classes"),
+        icon = ...block_icon(x) |> as.character()
       )
     }) |>
     keep(\(x) !is.null(x)) |>
@@ -265,7 +268,8 @@ search_registry <- function(data, req){
         name = name,
         description = description,
         index = block_index(x),
-        type = attr(x, "classes")
+        classes = attr(x, "classes"),
+        icon = ...block_icon(x) |> as.character()
       )
 
       if(grepl(query$query, name))
@@ -284,4 +288,10 @@ search_registry <- function(data, req){
     content_type = "application/json",
     content = jsonlite::toJSON(blocks, auto_unbox = TRUE, dataframe = "rows", force = TRUE)
   )
+}
+
+# TODO export block_icon from blockr
+...block_icon <- function(x){ # nolint
+  class(x) <- attr(x, "classes")
+  getFromNamespace("block_icon", "blockr")(x)
 }

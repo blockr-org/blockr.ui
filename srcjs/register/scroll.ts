@@ -5,11 +5,12 @@ export const unbindScroll = (params: any) => {
 };
 
 export const bindScroll = (params: any) => {
+  fetchUntilScrollable(params);
+
   unbindScroll(params);
 
   $(`#${params.ns}-scrollable`).on("scroll", (e) => {
     const childHeight = $(`#${params.ns}-scrollable-child`).height();
-
     const scrollableHeight = $(`#${params.ns}-scrollable`).height();
     const scrollTop = $(e.target).scrollTop();
 
@@ -17,14 +18,36 @@ export const bindScroll = (params: any) => {
       return;
     }
 
-    const n = $(`#${params.ns}-scrollable`).find(".add-block").length;
-
-    fetch(`${params.scroll}&min=${n}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (!data.length) return;
-
-        renderPills(params, data);
-      });
+    fetchMore(params);
   });
 };
+
+async function fetchMore(params: any) {
+  const n = $(`#${params.ns}-scrollable`).find(".add-block").length;
+
+  return fetch(`${params.scroll}&min=${n}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.length) return;
+
+      renderPills(params, data);
+    });
+}
+
+async function fetchUntilScrollable(params: any) {
+  const n = $(`#${params.ns}-scrollable`).find(".add-block").length;
+
+  return fetch(`${params.scroll}&min=${n}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (!data.length) return;
+
+      renderPills(params, data);
+      if (
+        $(`#${params.ns}-scrollable-child`).height() <=
+        $(`#${params.ns}-scrollable`).height()
+      ) {
+        fetchUntilScrollable(params);
+      }
+    });
+}

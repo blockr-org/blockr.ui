@@ -7,11 +7,14 @@ const createPills = (blocks: any): string => {
 };
 
 const createPill = (block: any): string => {
-  return `<p class="cursor-pointer mb-1 badge add-block bg-secondary mx-1"
-    data-index = ${block.index}
-    data-name = ${block.name}
-    data-description = ${block.description}
-    draggable = "TRUE">
+  return `<p class="cursor-pointer mb-1 badge add-block bg-${blockColor(
+    block,
+  )} me-1"
+    data-index="${block.index}"
+    data-icon='${block.icon}'
+    data-name="${block.name}"
+    data-description="${block.description}"
+    draggable="true">
     ${block.name}
   </p>`;
 };
@@ -22,4 +25,12 @@ export const renderPills = (params: any, data: any): void => {
   sortableAll(params);
   description();
   handleSearch(params);
+};
+
+const blockColor = (block: any) => {
+  if (block.classes.includes("data_block")) return "primary";
+
+  if (block.classes.includes("transform_block")) return "secondary";
+
+  return "info";
 };

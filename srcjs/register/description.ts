@@ -1,3 +1,5 @@
+const defaultIcon = `<i class="fas fa-cube"></i>`;
+
 export const description = () => {
   $(".add-block").off("mouseenter");
 
@@ -9,7 +11,7 @@ export const description = () => {
       .closest(".blockr-registry")
       .find(".blockr-description")
       .html(
-        `<small><i class='fas fa-info text-info px-2'></i>${$el.data(
+        `<small>${$el.data("icon") || defaultIcon}${$el.data(
           "description",
         )}</small>`,
       );

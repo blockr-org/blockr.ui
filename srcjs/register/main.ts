@@ -19,7 +19,9 @@ $(() => {
   });
 
   Shiny.addCustomMessageHandler("block-list-endpoints", (msg) => {
-    bindSearch(msg);
-    bindScroll(msg);
+    setTimeout(() => {
+      bindSearch(msg);
+      bindScroll(msg);
+    }, msg.delay);
   });
 });

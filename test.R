@@ -8,7 +8,7 @@ ui <- fluidPage(
   ),
   div(
     style = "width: 15rem;",
-    blockListUI("list", max_height = "8rem")
+    blockListUI("list", max_height = "30rem")
   ),
   hr(),
   actionButton("modal", "show modal"),
