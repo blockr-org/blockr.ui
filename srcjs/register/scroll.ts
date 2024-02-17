@@ -24,9 +24,9 @@ export const bindScroll = (params: any) => {
 };
 
 async function fetchMore(params: any) {
-  const n = $(`#${params.ns}-scrollable`).find(".add-block").length;
+  const n = getNBlocks(params.ns);
 
-  return fetch(`${params.scroll}&min=${n}`)
+  return fetch(`${params.scroll}&min=${n + 1}`)
     .then((res) => res.json())
     .then((data) => {
       if (!data.length) return;
@@ -36,9 +36,9 @@ async function fetchMore(params: any) {
 }
 
 async function fetchUntilScrollable(params: any) {
-  const n = $(`#${params.ns}-scrollable`).find(".add-block").length;
+  const n = getNBlocks(params.ns);
 
-  return fetch(`${params.scroll}&min=${n}`)
+  return fetch(`${params.scroll}&min=${n + 1}`)
     .then((res) => res.json())
     .then((data) => {
       if (!data.length) return;
@@ -53,3 +53,7 @@ async function fetchUntilScrollable(params: any) {
       }
     });
 }
+
+const getNBlocks = (ns: string): number => {
+  return $(`#${ns}-scrollable`).find(".add-block").length;
+};

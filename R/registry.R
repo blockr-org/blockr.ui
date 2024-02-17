@@ -293,5 +293,5 @@ search_registry <- function(data, req){
 # TODO export block_icon from blockr
 ...block_icon <- function(x){ # nolint
   class(x) <- attr(x, "classes")
-  getFromNamespace("block_icon", "blockr")(x)
+  utils::getFromNamespace("block_icon", "blockr")(x)
 }
