@@ -10,7 +10,8 @@
 blockListUI(
   id,
   headers = shiny::h5,
-  toast_position = c("top-right", "top-left", "bottom-right", "bottom-left")
+  toast_position = c("top-right", "top-left", "bottom-right", "bottom-left"),
+  max_height = "100vh"
 )
 
 block_list_server(id, feedback = TRUE, delay = 0L)
@@ -24,6 +25,8 @@ block_list_bind(session = shiny::getDefaultReactiveDomain(), delay = 0L)
 
 \item{toast_position}{Position of toast, only used if \code{feedback} is \code{TRUE}.}
 
+\item{max_height}{Maximum height of block list.}
+
 \item{feedback}{Whether to notify user of errors, warnings, and more.}
 
 \item{delay}{Delay in milliseconds before binding JavaScript.}
@@ -31,9 +34,11 @@ block_list_bind(session = shiny::getDefaultReactiveDomain(), delay = 0L)
 \item{session}{Shiny session.}
 }
 \value{
-\link[shiny:reactiveValues]{shiny::reactiveValues} with \code{block} to add where, .
-as well as \code{error} to display.
+A named \code{list} containing the following reactives: \code{error}, \code{started}, and \code{dropped}.
 }
 \description{
-Block List Module
+Display a list of draggable blocks.
+}
+\details{
+The list is server-side rendered.
 }

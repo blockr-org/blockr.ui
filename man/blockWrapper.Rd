@@ -4,12 +4,10 @@
 \alias{blockWrapper}
 \title{Block Wrapper}
 \usage{
-blockWrapper(blocks, cls)
+blockWrapper(blocks, ns)
 }
 \arguments{
 \item{blocks}{List of blocks to wrap.}
-
-\item{cls}{Class to filter}
 }
 \description{
 Creates a UI wrapper for a block.

@@ -1,11 +1,15 @@
 devtools::load_all()
 library(shiny)
+library(blockr.extra)
 
 ui <- fluidPage(
   theme = bslib::bs_theme(
     version = 5
   ),
-  blockListUI("list"),
+  div(
+    style = "width: 15rem;",
+    blockListUI("list", max_height = "30rem")
+  ),
   hr(),
   actionButton("modal", "show modal"),
   bsutils::offcanvas(
