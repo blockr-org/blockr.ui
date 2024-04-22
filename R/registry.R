@@ -258,6 +258,7 @@ scroll_registry <- function(data, req){
 
 search_registry <- function(data, req){
   query <- parseQueryString(req$QUERY_STRING)
+  query$query <- tolower(query$query)
 
   blocks <- data$registry |>
     map(\(x){
@@ -272,10 +273,10 @@ search_registry <- function(data, req){
         icon = ...block_icon(x) |> as.character()
       )
 
-      if(grepl(query$query, name))
+      if(grepl(query$query, tolower(name)))
         return(obj)
 
-      if(grepl(query$query, description))
+      if(grepl(query$query, tolower(description)))
         return(obj)
 
       return(NULL)
