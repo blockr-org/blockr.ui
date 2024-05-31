@@ -15,6 +15,6 @@ dependency <- function(dep){
     version = utils::packageVersion("blockr.ui"),
     name = dep,
     src = "assets",
-    script = c(file = sprintf("%s.js", dep))
+    script = sprintf("%s.js", dep)
   )
 }
